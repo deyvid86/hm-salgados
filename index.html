@@ -146,13 +146,45 @@
                             <h3 class="text-sm font-medium text-gray-900 mb-1">Entrega</h3>
                             <div class="flex space-x-4">
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="deliveryType" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <input type="radio" name="deliveryType" value="delivery" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300" checked>
                                     <span class="ml-2 text-xs">Delivery</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="deliveryType" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <input type="radio" name="deliveryType" value="pickup" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
                                     <span class="ml-2 text-xs">Retirar</span>
                                 </label>
+                            </div>
+                            
+                            <!-- Delivery Address -->
+                            <div id="deliveryAddressContainer" class="mt-2">
+                                <label class="block text-xs text-gray-700 mb-1">Endereço de Entrega</label>
+                                <input type="text" placeholder="Rua, número, complemento..." class="w-full text-xs border border-gray-300 rounded p-2">
+                            </div>
+                            
+                            <!-- Pickup Address -->
+                            <div id="pickupAddressContainer" class="mt-2 hidden">
+                                <p class="text-xs text-gray-700">Endereço para retirada:</p>
+                                <p class="text-xs font-medium">Rua Exemplo, 123 - Centro - Sua Cidade/SP</p>
+                            </div>
+                            
+                            <!-- Scheduling -->
+                            <div class="mt-2">
+                                <label class="inline-flex items-center">
+                                    <input type="checkbox" id="schedule" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded">
+                                    <span class="ml-2 text-xs">Agendar entrega</span>
+                                </label>
+                            </div>
+                            <div id="scheduleFields" class="mt-2 hidden">
+                                <div class="grid grid-cols-2 gap-2">
+                                    <div>
+                                        <label class="block text-xs text-gray-700 mb-1">Data</label>
+                                        <input type="date" class="w-full text-xs border border-gray-300 rounded p-1">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-700 mb-1">Hora</label>
+                                        <input type="time" class="w-full text-xs border border-gray-300 rounded p-1">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         
@@ -161,21 +193,38 @@
                             <h3 class="text-sm font-medium text-gray-900 mb-1">Pagamento</h3>
                             <div class="grid grid-cols-2 gap-2">
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <input type="radio" name="payment" value="pix" id="pix" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
                                     <span class="ml-2 text-xs">PIX</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Crédito</span>
+                                    <input type="radio" name="payment" value="credit" id="credit" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Cartão de Crédito</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Débito</span>
+                                    <input type="radio" name="payment" value="debit" id="debit" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Cartão de Débito</span>
                                 </label>
                                 <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <input type="radio" name="payment" value="cash" id="cash" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
                                     <span class="ml-2 text-xs">Dinheiro</span>
                                 </label>
+                            </div>
+                            
+                            <!-- PIX Key Container -->
+                            <div id="pixKeyContainer" class="mt-2 hidden">
+                                <p class="text-xs text-gray-700 mb-1">Chave PIX:</p>
+                                <div class="flex items-center bg-gray-100 p-2 rounded">
+                                    <span class="text-xs font-mono flex-1">123e4567-e12b-12d1-a456-426655440000</span>
+                                    <button class="copy-pix-btn text-orange-500 hover:text-orange-600 ml-2" title="Copiar chave">
+                                        <i class="fas fa-copy text-sm"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Cash Change Container -->
+                            <div id="cashChangeContainer" class="mt-2 hidden">
+                                <label class="block text-xs text-gray-700 mb-1">Troco para quanto?</label>
+                                <input type="text" placeholder="Ex: 50,00" class="w-full text-xs border border-gray-300 rounded p-2">
                             </div>
                         </div>
                         
@@ -483,21 +532,22 @@
             });
             
             // Delivery options
-            deliveryRadio.addEventListener('change', () => {
-                if (deliveryRadio.checked) {
-                    deliveryAddressContainer.classList.remove('hidden');
-                    pickupAddressContainer.classList.add('hidden');
-                }
-            });
-            
-            pickupRadio.addEventListener('change', () => {
-                if (pickupRadio.checked) {
-                    pickupAddressContainer.classList.remove('hidden');
-                    deliveryAddressContainer.classList.add('hidden');
-                }
+            document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'delivery') {
+                        document.getElementById('deliveryAddressContainer').classList.remove('hidden');
+                        document.getElementById('pickupAddressContainer').classList.add('hidden');
+                    } else {
+                        document.getElementById('pickupAddressContainer').classList.remove('hidden');
+                        document.getElementById('deliveryAddressContainer').classList.add('hidden');
+                    }
+                });
             });
             
             // Scheduling
+            const scheduleCheckbox = document.getElementById('schedule');
+            const scheduleFields = document.getElementById('scheduleFields');
+            
             scheduleCheckbox.addEventListener('change', () => {
                 if (scheduleCheckbox.checked) {
                     scheduleFields.classList.remove('hidden');
@@ -553,6 +603,38 @@
                 currentSearchTerm = '';
                 filterProducts(currentCategory, '');
                 clearSearch.classList.add('hidden');
+            });
+
+            // Payment option changes
+            document.querySelectorAll('input[name="payment"]').forEach(radio => {
+                radio.addEventListener('change', () => {
+                    if (radio.value === 'pix') {
+                        pixKeyContainer.classList.remove('hidden');
+                        cashChangeContainer.classList.add('hidden');
+                    } else if (radio.value === 'cash') {
+                        cashChangeContainer.classList.remove('hidden');
+                        pixKeyContainer.classList.add('hidden');
+                    } else {
+                        pixKeyContainer.classList.add('hidden');
+                        cashChangeContainer.classList.add('hidden');
+                    }
+                });
+            });
+
+            // Copy PIX key functionality
+            document.addEventListener('click', (e) => {
+                if (e.target.closest('.copy-pix-btn')) {
+                    const pixKey = '123e4567-e12b-12d1-a456-426655440000';
+                    navigator.clipboard.writeText(pixKey).then(() => {
+                        const btn = e.target.closest('.copy-pix-btn');
+                        btn.innerHTML = '<i class="fas fa-check text-sm"></i>';
+                        btn.classList.add('text-green-500');
+                        setTimeout(() => {
+                            btn.innerHTML = '<i class="fas fa-copy text-sm"></i>';
+                            btn.classList.remove('text-green-500');
+                        }, 2000);
+                    });
+                }
             });
         }
 
@@ -803,6 +885,16 @@
             if (deliveryRadio.checked) {
                 const address = document.querySelector('#deliveryAddressContainer input').value;
                 message += `*Entrega*: ${address || 'Endereço não informado'}\n`;
+                
+                // Add scheduling info if checked
+                const scheduleCheckbox = document.getElementById('schedule');
+                if (scheduleCheckbox.checked) {
+                    const date = document.querySelector('#scheduleFields input[type="date"]').value;
+                    const time = document.querySelector('#scheduleFields input[type="time"]').value;
+                    if (date && time) {
+                        message += `*Agendado para*: ${date} às ${time}\n`;
+                    }
+                }
             } else {
                 message += "*Retirada no balcão*\n";
             }
