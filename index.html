@@ -19,11 +19,6 @@
     align-items: center;
     justify-content: space-between;
   }
-  .produto p {
-    color: #666;
-    margin-bottom: 10px;
-    font-size: 14px;
-}
   #logo {
     height: 40px;
   }
@@ -349,13 +344,12 @@
 <script>
   // Produtos exemplo
   const produtos = [
-    const produtos = [
-    { nome: "X-Burguer", preco: 15.90, categoria: "Lanches", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png", descricao: "Pão, carne, queijo, alface e tomate." },
-    { nome: "Batata Frita", preco: 10.00, categoria: "Lanches", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046793.png", descricao: "Crocantes e sequinhas, a combinação perfeita." },
-    { nome: "Refrigerante", preco: 5.50, categoria: "Bebidas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046799.png", descricao: "Lata gelada de refrigerante." },
-    { nome: "Suco Natural", preco: 7.50, categoria: "Bebidas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046800.png", descricao: "Suco de laranja 100% natural." },
-    { nome: "Salada Caesar", preco: 18.00, categoria: "Saladas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046796.png", descricao: "Com alface, croutons, molho caesar e frango." }
-];
+    { nome: "X-Burguer", preco: 15.90, categoria: "Lanches", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png" },
+    { nome: "Batata Frita", preco: 10.00, categoria: "Lanches", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046793.png" },
+    { nome: "Refrigerante", preco: 5.50, categoria: "Bebidas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046799.png" },
+    { nome: "Suco Natural", preco: 7.50, categoria: "Bebidas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046800.png" },
+    { nome: "Salada Caesar", preco: 18.00, categoria: "Saladas", imagem: "https://cdn-icons-png.flaticon.com/512/1046/1046796.png" },
+  ];
 
   let carrinho = [];
 
@@ -417,10 +411,10 @@
   // Mostrar produto no card
   function adicionarProdutoCard(produto, i) {
     const card = document.createElement("div");
+    card.className = "produto";
     card.innerHTML = `
       <img src="${produto.imagem}" alt="${produto.nome}" />
       <h3>${produto.nome}</h3>
-      <p>${produto.descricao}</p><!-- nova linha -->
       <p>R$ ${produto.preco.toFixed(2)}</p>
       <label>Quantidade:
         <input type="number" min="1" value="1" id="qtd-produto-${i}" style="width: 50px;" />
@@ -428,7 +422,7 @@
       <button onclick="adicionarAoCarrinho(${i})">Adicionar</button>
     `;
     containerProdutos.appendChild(card);
-}
+  }
 
   // Mostrar todos produtos inicialmente
   function mostrarTodosProdutos() {
