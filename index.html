@@ -7,91 +7,20 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    margin: 0; padding: 0;
-    background: #f5f5f5;
+    margin: 0; padding-bottom: 60px;
+    background: #f0f0f0;
   }
+
   header {
-    background: #ff5722;
+    background: #ff6f00;
     color: white;
     padding: 15px;
     text-align: center;
-  }
-  #logo {
-    max-height: 50px;
-    vertical-align: middle;
-  }
-  #banner {
-    width: 100%;
-    max-height: 200px;
-    object-fit: cover;
-  }
-  #horario {
-    text-align: center;
-    background: #333;
-    color: white;
-    padding: 8px;
-  }
-  main {
-    padding: 15px;
-  }
-  .categorias {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 15px;
-    gap: 10px;
-  }
-  .categorias button {
-    padding: 8px 16px;
-    background: #ff5722;
-    border: none;
-    color: white;
-    cursor: pointer;
-    border-radius: 20px;
-    font-weight: bold;
-  }
-  .categorias button.active {
-    background: #e64a19;
-  }
-  .produtos {
-    display: grid;
-    grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
-    gap: 15px;
-  }
-  .produto {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 8px #ddd;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  .produto img {
-    max-width: 100%;
-    border-radius: 8px;
-    object-fit: cover;
-    height: 120px;
-  }
-  .produto h3 {
-    margin: 8px 0 4px 0;
-    font-size: 18px;
-  }
-  .produto p {
-    margin: 0 0 8px 0;
-    font-size: 14px;
-    color: #555;
-  }
-  .produto button {
-    background: #ff5722;
-    color: white;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 6px;
+    font-size: 24px;
     font-weight: bold;
   }
 
-  /* Botão fixo abrir carrinho */
+  /* Botão carrinho fixo no canto inferior direito */
   #botao-carrinho {
     position: fixed;
     bottom: 20px;
@@ -100,388 +29,270 @@
     color: white;
     border: none;
     border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    font-size: 28px;
+    width: 56px;
+    height: 56px;
+    font-size: 24px;
     cursor: pointer;
-    z-index: 1001;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
     display: flex;
     align-items: center;
     justify-content: center;
+    z-index: 10000;
   }
-
-  /* Badge do contador */
   #badge-carrinho {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 6px;
+    right: 6px;
     background: red;
+    border-radius: 50%;
     color: white;
-    font-size: 14px;
+    font-size: 12px;
     padding: 2px 6px;
-    border-radius: 12px;
   }
 
-  /* Carrinho em tela cheia */
+  /* Carrinho tela cheia */
   #carrinho {
+    display: none;
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
     background: white;
-    z-index: 1000;
-    padding: 20px;
-    box-sizing: border-box;
-    display: none; /* começa oculto */
+    z-index: 9999;
     flex-direction: column;
+    padding: 20px;
     overflow-y: auto;
   }
-
-  /* Botão fechar carrinho */
-  #fechar-carrinho {
-    align-self: flex-end;
-    background: transparent;
-    border: none;
-    font-size: 28px;
-    cursor: pointer;
-    margin-bottom: 10px;
+  #carrinho.show {
+    display: flex;
   }
 
-  /* Itens do carrinho */
+  .fechar-carrinho {
+    position: absolute;
+    top: 15px; right: 15px;
+    background: none;
+    border: none;
+    font-size: 32px;
+    cursor: pointer;
+  }
+
+  h2 {
+    margin-top: 50px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
   #itens-carrinho {
     flex-grow: 1;
     overflow-y: auto;
-    margin-bottom: 15px;
   }
+
   .item-carrinho {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    margin-bottom: 12px;
     padding-bottom: 8px;
+    border-bottom: 1px solid #ddd;
   }
-  .item-info {
-    flex-grow: 1;
-  }
-  .item-info p {
-    margin: 0 0 4px 0;
-    font-size: 14px;
-  }
-  .controles-quantidade {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+
   .controles-quantidade button {
-    background: #ff5722;
-    border: none;
-    color: white;
-    padding: 2px 8px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-  }
-  .remove-item {
-    background: transparent;
-    border: none;
-    color: red;
-    font-size: 20px;
+    margin: 0 4px;
+    padding: 4px 10px;
+    font-size: 16px;
     cursor: pointer;
   }
 
-  /* Campos adicionais */
-  #opcoes-entrega-pagamento {
-    background: #fafafa;
-    padding: 15px;
-    border-radius: 8px;
-  }
   label {
-    display: block;
-    margin-top: 10px;
     font-weight: bold;
+    margin-top: 15px;
+    display: block;
   }
-  select, input[type="text"], input[type="datetime-local"], input[type="number"] {
+  select, input[type=text], input[type=datetime-local], input[type=number] {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     box-sizing: border-box;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-  }
-  #campo-endereco, #campo-agendamento, #campo-troco, #campo-pix {
-    margin-top: 8px;
-  }
-  #info-retirada {
-    margin-top: 8px;
-    background: #eee;
-    padding: 10px;
-    border-radius: 6px;
-  }
-  #btn-copiar-pix {
-    margin-top: 8px;
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    border-radius: 6px;
-  }
-  #btn-finalizar {
-    margin-top: 15px;
-    width: 100%;
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 8px;
   }
 
-  /* Modal observação */
-  #modal-observacao {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
+  #btn-finalizar {
+    margin-top: 20px;
+    padding: 15px;
+    background: #28a745;
+    color: white;
+    font-size: 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
   }
-  #modal-conteudo {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 90%;
-    max-width: 400px;
-  }
-  #modal-conteudo textarea {
-    width: 100%;
-    height: 80px;
-    padding: 8px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    resize: vertical;
-  }
-  #modal-conteudo button {
+
+  /* Estilos para campos que aparecem/desaparecem */
+  #campo-endereco, #info-retirada, #campo-agendamento,
+  #campo-troco, #campo-pix {
     margin-top: 10px;
-    background: #ff5722;
+    display: none;
+  }
+
+  /* Lista de produtos simples */
+  #lista-produtos {
+    padding: 10px 20px 80px;
+  }
+  .produto {
+    background: white;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgb(0 0 0 / 0.1);
+  }
+  .produto h3 {
+    margin: 0 0 10px;
+  }
+  .produto p {
+    margin: 0 0 10px;
+  }
+  .produto button {
+    background: #ff6f00;
     color: white;
     border: none;
-    padding: 10px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
+    padding: 10px 15px;
+    font-size: 16px;
     border-radius: 6px;
+    cursor: pointer;
   }
 
   /* Responsividade */
-  @media (max-width: 768px) {
-    .produtos {
-      grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
-    }
-    #botao-carrinho {
-      width: 50px;
-      height: 50px;
-      font-size: 24px;
-    }
-    #carrinho {
-      padding: 15px;
+  @media (max-width: 600px) {
+    #btn-finalizar {
+      font-size: 22px;
+      padding: 18px;
     }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <img src="https://via.placeholder.com/150x50?text=Logo" alt="Logo" id="logo" />
-</header>
+<header>Minha Lanchonete</header>
 
-<img src="https://via.placeholder.com/800x200?text=Banner+Lanchonete" alt="Banner" id="banner" />
-
-<div id="horario">Horário de Funcionamento: Seg a Sex 10:00 - 22:00 | Sáb 12:00 - 23:00</div>
-
-<main>
-  <div class="categorias">
-    <button class="active" data-categoria="todos">Todos</button>
-    <button data-categoria="hamburguer">Hambúrguer</button>
-    <button data-categoria="bebidas">Bebidas</button>
-    <button data-categoria="sobremesas">Sobremesas</button>
+<section id="lista-produtos">
+  <div class="produto" data-nome="X-Burguer" data-preco="15.50">
+    <h3>X-Burguer</h3>
+    <p>Delicioso hambúrguer artesanal.</p>
+    <button class="btn-adicionar">Adicionar</button>
   </div>
+  <div class="produto" data-nome="Cachorro Quente" data-preco="12.00">
+    <h3>Cachorro Quente</h3>
+    <p>Salsicha com molho especial.</p>
+    <button class="btn-adicionar">Adicionar</button>
+  </div>
+  <div class="produto" data-nome="Refrigerante Lata" data-preco="5.00">
+    <h3>Refrigerante Lata</h3>
+    <p>350ml de refresco gelado.</p>
+    <button class="btn-adicionar">Adicionar</button>
+  </div>
+</section>
 
-  <div class="produtos" id="produtos"></div>
-</main>
-
-<!-- Botão fixo abrir carrinho -->
+<!-- Botão carrinho fixo -->
 <button id="botao-carrinho" title="Abrir carrinho">
-  🛒 <span id="badge-carrinho">0</span>
+  🛒 <span id="badge-carrinho" style="display:none">0</span>
 </button>
 
-<!-- Carrinho tela cheia -->
-<div id="carrinho">
-  <button id="fechar-carrinho" title="Fechar carrinho">×</button>
-  <div id="itens-carrinho"></div>
+<!-- Carrinho em tela cheia -->
+<div id="carrinho" role="dialog" aria-modal="true" aria-labelledby="titulo-carrinho">
+  <button class="fechar-carrinho" id="fechar-carrinho" aria-label="Fechar carrinho">×</button>
+  <h2 id="titulo-carrinho">Seu Pedido</h2>
+  <div id="itens-carrinho">Carrinho vazio</div>
 
-  <div id="opcoes-entrega-pagamento">
-    <label for="tipo-entrega">Tipo de Entrega:</label>
-    <select id="tipo-entrega">
-      <option value="">Selecione...</option>
-      <option value="delivery">Delivery</option>
-      <option value="retirar">Retirar no balcão</option>
-      <option value="agendamento">Agendamento</option>
-    </select>
-    <div id="campo-endereco" style="display:none;">
-      <label for="endereco">Endereço para entrega:</label>
-      <input type="text" id="endereco" placeholder="Rua, número, bairro..." />
-    </div>
-    <div id="info-retirada" style="display:none;">
-      <strong>Endereço para retirar:</strong>
-      <p>Rua das Laranjeiras, 123 - Centro</p>
-    </div>
-    <div id="campo-agendamento" style="display:none;">
-      <label for="data-agendamento">Data e hora do agendamento:</label>
-      <input type="datetime-local" id="data-agendamento" />
-    </div>
+  <label for="tipo-entrega">Tipo de Entrega:</label>
+  <select id="tipo-entrega" required>
+    <option value="">Selecione</option>
+    <option value="delivery">Delivery</option>
+    <option value="retirar">Retirar no balcão</option>
+    <option value="agendamento">Agendamento</option>
+  </select>
 
-    <label for="tipo-pagamento">Forma de Pagamento:</label>
-    <select id="tipo-pagamento">
-      <option value="">Selecione...</option>
-      <option value="pix">Pix</option>
-      <option value="cartao-credito">Cartão de Crédito</option>
-      <option value="cartao-debito">Cartão de Débito</option>
-      <option value="dinheiro">Dinheiro</option>
-    </select>
-    <div id="campo-troco" style="display:none;">
-      <label for="troco-para">Troco para:</label>
-      <input type="number" id="troco-para" placeholder="Valor para troco" min="0" step="0.01" />
-    </div>
-    <div id="campo-pix" style="display:none;">
-      <label>Chave Pix:</label>
-      <input type="text" readonly value="000.111.222-33" id="chave-pix" />
-      <button id="btn-copiar-pix">Copiar chave Pix</button>
-    </div>
-
-    <button id="btn-finalizar">Finalizar Pedido</button>
+  <div id="campo-endereco">
+    <input type="text" id="endereco" placeholder="Digite o endereço para entrega" />
   </div>
-</div>
-
-<!-- Modal observação -->
-<div id="modal-observacao">
-  <div id="modal-conteudo">
-    <h3>Observação do produto</h3>
-    <textarea id="obs-text"></textarea>
-    <button id="btn-adicionar-obs">Adicionar ao carrinho</button>
+  <div id="info-retirada">
+    <p>Retire seu pedido no endereço: Rua das Laranjeiras, 123 - Centro</p>
   </div>
+  <div id="campo-agendamento">
+    <input type="datetime-local" id="data-agendamento" />
+  </div>
+
+  <label for="tipo-pagamento">Forma de Pagamento:</label>
+  <select id="tipo-pagamento" required>
+    <option value="">Selecione</option>
+    <option value="pix">Pix</option>
+    <option value="cartao">Cartão</option>
+    <option value="dinheiro">Dinheiro</option>
+  </select>
+
+  <div id="campo-troco">
+    <input type="number" id="troco-para" placeholder="Valor para troco" min="0" step="0.01" />
+  </div>
+
+  <div id="campo-pix">
+    <input type="text" id="chave-pix" value="meu-pix@exemplo.com" readonly />
+    <button id="btn-copiar-pix">Copiar chave Pix</button>
+  </div>
+
+  <button id="btn-finalizar">Finalizar Pedido</button>
 </div>
 
 <script>
-  // Dados dos produtos
-  const produtos = [
-    { id: 1, nome: "X-Burguer", preco: 18.90, categoria: "hamburguer", img: "https://via.placeholder.com/180x120?text=X-Burguer" },
-    { id: 2, nome: "X-Salada", preco: 22.50, categoria: "hamburguer", img: "https://via.placeholder.com/180x120?text=X-Salada" },
-    { id: 3, nome: "Coca-Cola 350ml", preco: 5.00, categoria: "bebidas", img: "https://via.placeholder.com/180x120?text=Coca-Cola" },
-    { id: 4, nome: "Suco Natural", preco: 7.50, categoria: "bebidas", img: "https://via.placeholder.com/180x120?text=Suco" },
-    { id: 5, nome: "Sorvete Casquinha", preco: 6.00, categoria: "sobremesas", img: "https://via.placeholder.com/180x120?text=Sorvete" },
-    { id: 6, nome: "Milkshake", preco: 10.00, categoria: "sobremesas", img: "https://via.placeholder.com/180x120?text=Milkshake" },
-  ];
+  // Estado do carrinho
+  let carrinho = [];
 
-  const produtosEl = document.getElementById("produtos");
-  const categoriasEl = document.querySelectorAll(".categorias button");
   const botaoCarrinho = document.getElementById("botao-carrinho");
+  const badgeCarrinho = document.getElementById("badge-carrinho");
   const carrinhoEl = document.getElementById("carrinho");
   const fecharCarrinhoBtn = document.getElementById("fechar-carrinho");
   const itensCarrinhoEl = document.getElementById("itens-carrinho");
+
   const tipoEntregaEl = document.getElementById("tipo-entrega");
   const campoEnderecoEl = document.getElementById("campo-endereco");
   const infoRetiradaEl = document.getElementById("info-retirada");
   const campoAgendamentoEl = document.getElementById("campo-agendamento");
+
   const tipoPagamentoEl = document.getElementById("tipo-pagamento");
   const campoTrocoEl = document.getElementById("campo-troco");
   const campoPixEl = document.getElementById("campo-pix");
   const btnCopiarPix = document.getElementById("btn-copiar-pix");
+
   const btnFinalizar = document.getElementById("btn-finalizar");
 
-  const modalObservacao = document.getElementById("modal-observacao");
-  const obsText = document.getElementById("obs-text");
-  const btnAdicionarObs = document.getElementById("btn-adicionar-obs");
-
-  let carrinho = [];
-  let produtoSelecionado = null;
-
-  // Render produtos por categoria
-  function renderProdutos(categoria = "todos") {
-    produtosEl.innerHTML = "";
-    const filtrados = categoria === "todos" ? produtos : produtos.filter(p => p.categoria === categoria);
-    filtrados.forEach(prod => {
-      const div = document.createElement("div");
-      div.className = "produto";
-      div.innerHTML = `
-        <img src="${prod.img}" alt="${prod.nome}" />
-        <h3>${prod.nome}</h3>
-        <p>R$ ${prod.preco.toFixed(2)}</p>
-        <button data-id="${prod.id}">Adicionar</button>
-      `;
-      produtosEl.appendChild(div);
-    });
-
-    // Eventos dos botões Adicionar
-    produtosEl.querySelectorAll("button").forEach(btn => {
-      btn.onclick = () => {
-        const id = Number(btn.getAttribute("data-id"));
-        produtoSelecionado = produtos.find(p => p.id === id);
-        obsText.value = "";
-        modalObservacao.style.display = "flex";
-      };
-    });
-  }
-
-  // Adicionar ao carrinho com observação e quantidade = 1
-  btnAdicionarObs.onclick = () => {
-    if (!produtoSelecionado) return;
-    const observacao = obsText.value.trim();
-    // Verifica se já existe no carrinho (mesmo produto e mesma obs)
-    const idx = carrinho.findIndex(item => item.id === produtoSelecionado.id && item.observacao === observacao);
-    if (idx > -1) {
-      carrinho[idx].quantidade++;
-    } else {
-      carrinho.push({ ...produtoSelecionado, quantidade: 1, observacao });
+  // Atualiza badge carrinho e lista de itens no carrinho
+  function atualizarCarrinho() {
+    if (carrinho.length === 0) {
+      badgeCarrinho.style.display = "none";
+      itensCarrinhoEl.textContent = "Carrinho vazio";
+      return;
     }
-    modalObservacao.style.display = "none";
-    renderCarrinho();
-  };
 
-  // Render carrinho
-  function renderCarrinho() {
+    badgeCarrinho.style.display = "inline-block";
+    let totalItens = 0;
     itensCarrinhoEl.innerHTML = "";
-    carrinho.forEach((item, i) => {
-      const div = document.createElement("div");
-      div.className = "item-carrinho";
-      div.innerHTML = `
-        <div class="item-info">
-          <p><strong>${item.nome}</strong></p>
-          <p>R$ ${item.preco.toFixed(2)} x ${item.quantidade} = R$ ${(item.preco * item.quantidade).toFixed(2)}</p>
-          ${item.observacao ? `<p><em>Obs: ${item.observacao}</em></p>` : ""}
+
+    carrinho.forEach((item, index) => {
+      totalItens += item.quantidade;
+      const divItem = document.createElement("div");
+      divItem.className = "item-carrinho";
+      divItem.innerHTML = `
+        <div>
+          <strong>${item.nome}</strong><br />
+          R$ ${item.preco.toFixed(2)} x ${item.quantidade}
         </div>
         <div class="controles-quantidade">
-          <button data-index="${i}" class="diminuir">-</button>
-          <span>${item.quantidade}</span>
-          <button data-index="${i}" class="aumentar">+</button>
-          <button data-index="${i}" class="remove-item" title="Remover item">×</button>
+          <button data-index="${index}" class="diminuir">-</button>
+          <button data-index="${index}" class="aumentar">+</button>
+          <button data-index="${index}" class="remover">x</button>
         </div>
       `;
-      itensCarrinhoEl.appendChild(div);
+      itensCarrinhoEl.appendChild(divItem);
     });
 
-    // Atualiza contador no botão carrinho
-    const totalQtd = carrinho.reduce((acc, item) => acc + item.quantidade, 0);
-    document.getElementById("badge-carrinho").textContent = totalQtd;
+    badgeCarrinho.textContent = totalItens;
 
-    // Eventos dos botões de quantidade e remoção
+    // Adiciona eventos dos botões dentro do carrinho
     itensCarrinhoEl.querySelectorAll(".diminuir").forEach(btn => {
       btn.onclick = () => {
         const idx = Number(btn.getAttribute("data-index"));
@@ -490,59 +301,73 @@
         } else {
           carrinho.splice(idx, 1);
         }
-        renderCarrinho();
+        atualizarCarrinho();
       };
     });
+
     itensCarrinhoEl.querySelectorAll(".aumentar").forEach(btn => {
       btn.onclick = () => {
         const idx = Number(btn.getAttribute("data-index"));
         carrinho[idx].quantidade++;
-        renderCarrinho();
+        atualizarCarrinho();
       };
     });
-    itensCarrinhoEl.querySelectorAll(".remove-item").forEach(btn => {
+
+    itensCarrinhoEl.querySelectorAll(".remover").forEach(btn => {
       btn.onclick = () => {
         const idx = Number(btn.getAttribute("data-index"));
         carrinho.splice(idx, 1);
-        renderCarrinho();
+        atualizarCarrinho();
       };
     });
   }
 
-  // Filtrar por categoria
-  categoriasEl.forEach(botao => {
-    botao.onclick = () => {
-      categoriasEl.forEach(b => b.classList.remove("active"));
-      botao.classList.add("active");
-      renderProdutos(botao.getAttribute("data-categoria"));
-    };
-  });
-
-  // Abrir e fechar carrinho
+  // Abrir carrinho
   botaoCarrinho.onclick = () => {
     if (carrinho.length === 0) {
       alert("Carrinho vazio!");
       return;
     }
-    carrinhoEl.style.display = "flex";
+    carrinhoEl.classList.add("show");
   };
+
+  // Fechar carrinho
   fecharCarrinhoBtn.onclick = () => {
-    carrinhoEl.style.display = "none";
+    carrinhoEl.classList.remove("show");
   };
 
-  // Mostrar campos conforme tipo de entrega
+  // Adicionar produto ao carrinho
+  document.querySelectorAll(".btn-adicionar").forEach(btn => {
+    btn.onclick = () => {
+      const produtoEl = btn.closest(".produto");
+      const nome = produtoEl.getAttribute("data-nome");
+      const preco = parseFloat(produtoEl.getAttribute("data-preco"));
+
+      // Se já existe no carrinho, aumenta quantidade
+      const indexExistente = carrinho.findIndex(i => i.nome === nome);
+      if (indexExistente >= 0) {
+        carrinho[indexExistente].quantidade++;
+      } else {
+        carrinho.push({nome, preco, quantidade:1});
+      }
+      atualizarCarrinho();
+      alert(nome + " adicionado ao carrinho!");
+    };
+  });
+
+  // Mostrar campos de entrega conforme seleção
   tipoEntregaEl.onchange = () => {
-    const valor = tipoEntregaEl.value;
-    campoEnderecoEl.style.display = valor === "delivery" ? "block" : "none";
-    infoRetiradaEl.style.display = valor === "retirar" ? "block" : "none";
-    campoAgendamentoEl.style.display = valor === "agendamento" ? "block" : "none";
+    const val = tipoEntregaEl.value;
+    campoEnderecoEl.style.display = val === "delivery" ? "block" : "none";
+    infoRetiradaEl.style.display = val === "retirar" ? "block" : "none";
+    campoAgendamentoEl.style.display = val === "agendamento" ? "block" : "none";
   };
 
-  // Mostrar campos conforme tipo pagamento
+  // Mostrar campos pagamento conforme seleção
   tipoPagamentoEl.onchange = () => {
-    const valor = tipoPagamentoEl.value;
-    campoTrocoEl.style.display = valor === "dinheiro" ? "block" : "none";
-    campoPixEl.style.display = valor === "pix" ? "block" : "none";
+    const val = tipoPagamentoEl.value;
+    campoTrocoEl.style.display = val === "dinheiro" ? "block" : "none";
+    campoPixEl.style.display = val === "pix" ? "block" : "none";
   };
 
   // Copiar chave Pix
@@ -553,7 +378,7 @@
     });
   };
 
-  // Finalizar pedido: gera mensagem WhatsApp e abre no WhatsApp Web/APP
+  // Finalizar pedido e abrir WhatsApp
   btnFinalizar.onclick = () => {
     if (carrinho.length === 0) {
       alert("Adicione itens ao carrinho antes de finalizar.");
@@ -583,43 +408,33 @@
       }
     }
 
-    // Monta mensagem
     let mensagem = "Olá, gostaria de fazer um pedido:%0A%0A";
     carrinho.forEach(item => {
-      mensagem += `- ${item.nome} (x${item.quantidade})`;
-      if (item.observacao) mensagem += ` (Obs: ${item.observacao})`;
-      mensagem += `%0A`;
+      mensagem += `- ${item.nome} (x${item.quantidade})%0A`;
     });
 
     mensagem += `%0ATipo de entrega: ${tipoEntregaEl.options[tipoEntregaEl.selectedIndex].text}%0A`;
+
     if (tipoEntregaEl.value === "delivery") {
       mensagem += `Endereço: ${document.getElementById("endereco").value.trim()}%0A`;
     } else if (tipoEntregaEl.value === "retirar") {
-      mensagem += `Retirar no balcão - Rua das Laranjeiras, 123 - Centro%0A`;
+      mensagem += "Retirar no balcão - Rua das Laranjeiras, 123 - Centro%0A";
     } else if (tipoEntregaEl.value === "agendamento") {
       mensagem += `Agendamento para: ${document.getElementById("data-agendamento").value.replace("T", " ")}%0A`;
     }
+
     mensagem += `Forma de pagamento: ${tipoPagamentoEl.options[tipoPagamentoEl.selectedIndex].text}%0A`;
+
     if (tipoPagamentoEl.value === "dinheiro") {
       mensagem += `Troco para: R$ ${parseFloat(document.getElementById("troco-para").value).toFixed(2)}%0A`;
     }
-    mensagem += `%0AObrigado!`;
 
-    const telefone = "5584986725871"; // Coloque seu número aqui no formato internacional (ex: 55+DDD+Número)
+    mensagem += "%0AObrigado!";
+
+    const telefone = "5584986725871"; // coloque seu número no formato internacional aqui
     const urlWhatsapp = `https://wa.me/${telefone}?text=${mensagem}`;
     window.open(urlWhatsapp, "_blank");
   };
-
-  // Fechar modal observação clicando fora
-  modalObservacao.onclick = (e) => {
-    if (e.target === modalObservacao) {
-      modalObservacao.style.display = "none";
-    }
-  };
-
-  // Inicialização
-  renderProdutos();
-  renderCarrinho();
 </script>
 
 </body>
