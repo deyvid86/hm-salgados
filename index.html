@@ -297,12 +297,10 @@
 <!-- Overlay carrinho -->
 <div id="overlay-carrinho">
   <header>
-    <h2>Seu Carrinho</h2>
-<button id="continuar-comprando" style="margin-bottom: 20px; background: #ffcc5b; color: #000; padding: 10px; border: none; border-radius: 5px; cursor: pointer">
-  Continuar comprando
-</button>
-<ul id="itens-carrinho"><!-- Itens serão populados pelo JavaScript --></ul>
-
+    <h2>Carrinho</h2>
+    <button id="btn-fechar-carrinho" title="Fechar carrinho">&times;</button>
+  </header>
+  <div id="itens-carrinho">Carrinho vazio</div>
 
   <div id="resumo"></div>
 
@@ -537,13 +535,9 @@
   };
 
   // Botão fechar carrinho
-  document.getElementById("continuar-comprando").onclick = () => {
-  overlayCarrinho.classList.remove("active");
-};
-
-
-
-
+  btnFecharCarrinho.onclick = () => {
+    overlayCarrinho.classList.remove("active");
+  };
 
   // Finalizar pedido - montar mensagem para WhatsApp
   const btnFinalizar = document.getElementById("btn-finalizar");
@@ -592,7 +586,7 @@
     }
 
     // Enviar para WhatsApp
-    const telefoneLoja = "5584986725871"; // Troque pelo seu telefone com DDD e código país (55 Brasil)
+    const telefoneLoja = "5591999999999"; // Troque pelo seu telefone com DDD e código país (55 Brasil)
     const urlWhats = `https://wa.me/${telefoneLoja}?text=${encodeURIComponent(mensagem)}`;
     window.open(urlWhats, "_blank");
   };
