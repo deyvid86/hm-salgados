@@ -31,9 +31,15 @@
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
         .banner {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://drive.google.com/file/d/1rK8-y_aDFJ7Ensdz9Jsw6m_ODsfOteSz/view?usp=drive_link');
             background-size: cover;
             background-position: center;
+        }
+        .search-container {
+            transition: all 0.3s ease;
+        }
+        .search-container.focused {
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
         }
     </style>
 </head>
@@ -45,10 +51,30 @@
                 <img src="https://via.placeholder.com/50" alt="Logo" class="h-10 w-10 rounded-full">
                 <h1 class="ml-3 text-xl font-bold text-gray-800">Lanchonete Sabor & Cia</h1>
             </div>
-            <div class="relative">
+            <div class="flex items-center space-x-4">
+                <div class="relative hidden md:block">
+                    <div id="search-container" class="search-container flex items-center bg-gray-100 rounded-full px-4 py-2">
+                        <i class="fas fa-search text-gray-500 mr-2"></i>
+                        <input id="search-input" type="text" placeholder="Buscar produtos..." class="bg-transparent border-none focus:outline-none w-40 md:w-48 lg:w-64">
+                        <button id="clear-search" class="ml-2 text-gray-500 hover:text-gray-700 hidden">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
                 <button id="cart-btn" class="relative text-gray-700 hover:text-gray-900">
                     <i class="fas fa-shopping-cart text-2xl"></i>
                     <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Search -->
+        <div class="container mx-auto px-4 pb-3 md:hidden">
+            <div id="mobile-search-container" class="search-container flex items-center bg-gray-100 rounded-full px-4 py-2">
+                <i class="fas fa-search text-gray-500 mr-2"></i>
+                <input id="mobile-search-input" type="text" placeholder="Buscar produtos..." class="bg-transparent border-none focus:outline-none w-full">
+                <button id="mobile-clear-search" class="ml-2 text-gray-500 hover:text-gray-700 hidden">
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
@@ -77,6 +103,14 @@
                 <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="bebidas">Bebidas</button>
                 <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="combos">Combos</button>
             </div>
+        </div>
+
+        <!-- Search Results Info -->
+        <div id="search-results-info" class="mb-4 hidden">
+            <h3 class="text-lg font-semibold text-gray-800">Resultados da busca para: <span id="search-term" class="text-yellow-600"></span></h3>
+            <button id="clear-search-results" class="mt-2 text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                <i class="fas fa-times mr-1"></i> Limpar busca
+            </button>
         </div>
 
         <!-- Products Grid -->
@@ -134,7 +168,7 @@
                                 <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Rua, número, bairro, complemento...">
                             </div>
                         </button>
-                        
+                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="pickup">
                             <div class="flex items-center">
                                 <i class="fas fa-store mr-3 text-blue-500"></i>
@@ -144,7 +178,7 @@
                                 </div>
                             </div>
                         </button>
-                        
+                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="schedule">
                             <div class="flex items-center">
                                 <i class="fas fa-calendar-alt mr-3 text-purple-500"></i>
@@ -190,14 +224,14 @@
                             <p class="text-sm">Dinheiro</p>
                         </button>
                     </div>
-                    
+                                        
                     <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
                         <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
                         <button class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
                             <i class="fas fa-copy mr-2"></i> Copiar chave
                         </button>
                     </div>
-                    
+                                        
                     <div id="cash-change" class="mt-3 hidden">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Precisa de troco para quanto?</label>
                         <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="R$ 0,00">
@@ -237,21 +271,21 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                
+                                
                 <img id="modal-product-image" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                
+                                
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
                     <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ex: sem cebola, maionese à parte..."></textarea>
                 </div>
-                
+                                
                 <div class="flex items-center justify-between">
                     <div class="flex items-center border rounded-lg">
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="decrease">-</button>
                         <span class="quantity-display px-3 py-1">1</span>
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="increase">+</button>
                     </div>
-                    
+                                        
                     <button id="add-to-cart-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium">
                         Adicionar <span id="modal-total-price" class="font-bold">R$ 0.00</span>
                     </button>
@@ -335,6 +369,8 @@
         let currentQuantity = 1;
         let deliveryType = null;
         let paymentType = null;
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
 
         // DOM Elements
         const productsGrid = document.getElementById('products-grid');
@@ -365,6 +401,15 @@
         const pixInfo = document.getElementById('pix-info');
         const cashChange = document.getElementById('cash-change');
         const checkoutBtn = document.getElementById('checkout-btn');
+        const searchInput = document.getElementById('search-input');
+        const mobileSearchInput = document.getElementById('mobile-search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
+        const mobileClearSearchBtn = document.getElementById('mobile-clear-search');
+        const searchContainer = document.getElementById('search-container');
+        const mobileSearchContainer = document.getElementById('mobile-search-container');
+        const searchResultsInfo = document.getElementById('search-results-info');
+        const searchTermEl = document.getElementById('search-term');
+        const clearSearchResultsBtn = document.getElementById('clear-search-results');
 
         // Initialize the app
         function init() {
@@ -372,14 +417,43 @@
             setupEventListeners();
         }
 
-        // Render products based on category
-        function renderProducts(category = 'all') {
+        // Render products based on category and search term
+        function renderProducts(category = 'all', searchTerm = '') {
             productsGrid.innerHTML = '';
             
-            const filteredProducts = category === 'all' 
-                ? products 
-                : products.filter(product => product.category === category);
+            let filteredProducts = products;
             
+            // Filter by category if not 'all'
+            if (category !== 'all') {
+                filteredProducts = filteredProducts.filter(product => product.category === category);
+            }
+            
+            // Filter by search term if provided
+            if (searchTerm) {
+                const term = searchTerm.toLowerCase();
+                filteredProducts = filteredProducts.filter(product => 
+                    product.name.toLowerCase().includes(term) || 
+                    product.description.toLowerCase().includes(term)
+                );
+                
+                // Show search results info
+                searchResultsInfo.classList.remove('hidden');
+                searchTermEl.textContent = searchTerm;
+            } else {
+                searchResultsInfo.classList.add('hidden');
+            }
+            
+            if (filteredProducts.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="col-span-full text-center py-10">
+                        <i class="fas fa-search text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">Nenhum produto encontrado</p>
+                        ${searchTerm ? `<p class="text-sm mt-2">Tente buscar por termos diferentes</p>` : ''}
+                    </div>
+                `;
+                return;
+            }
+
             filteredProducts.forEach(product => {
                 const productCard = document.createElement('div');
                 productCard.className = 'product-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300';
@@ -400,11 +474,37 @@
                 `;
                 productsGrid.appendChild(productCard);
             });
-            
+
             // Add event listeners to the new buttons
             document.querySelectorAll('.add-product-btn').forEach(btn => {
                 btn.addEventListener('click', () => openProductModal(parseInt(btn.dataset.id)));
             });
+        }
+
+        // Search products
+        function searchProducts(term) {
+            currentSearchTerm = term;
+            renderProducts(currentCategory, term);
+            
+            // Show/hide clear button
+            if (term) {
+                clearSearchBtn.classList.remove('hidden');
+                mobileClearSearchBtn.classList.remove('hidden');
+            } else {
+                clearSearchBtn.classList.add('hidden');
+                mobileClearSearchBtn.classList.add('hidden');
+            }
+        }
+
+        // Clear search
+        function clearSearch() {
+            searchInput.value = '';
+            mobileSearchInput.value = '';
+            currentSearchTerm = '';
+            clearSearchBtn.classList.add('hidden');
+            mobileClearSearchBtn.classList.add('hidden');
+            searchResultsInfo.classList.add('hidden');
+            renderProducts(currentCategory);
         }
 
         // Open product modal
@@ -648,7 +748,8 @@
                 btn.addEventListener('click', () => {
                     categoryBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    renderProducts(btn.dataset.category);
+                    currentCategory = btn.dataset.category;
+                    renderProducts(currentCategory, currentSearchTerm);
                 });
             });
             
@@ -707,8 +808,51 @@
                 const encodedMessage = encodeURIComponent(message);
                 window.open(`https://wa.me/5584986725871?text=${encodedMessage}`, '_blank');
             });
+            
+            // Search functionality
+            searchInput.addEventListener('input', (e) => {
+                searchProducts(e.target.value);
+            });
+            
+            mobileSearchInput.addEventListener('input', (e) => {
+                searchProducts(e.target.value);
+            });
+            
+            clearSearchBtn.addEventListener('click', clearSearch);
+            mobileClearSearchBtn.addEventListener('click', clearSearch);
+            clearSearchResultsBtn.addEventListener('click', clearSearch);
+            
+            // Search container focus effects
+            searchInput.addEventListener('focus', () => {
+                searchContainer.classList.add('focused');
+            });
+            
+            searchInput.addEventListener('blur', () => {
+                searchContainer.classList.remove('focused');
+            });
+            
+            mobileSearchInput.addEventListener('focus', () => {
+                mobileSearchContainer.classList.add('focused');
+            });
+            
+            mobileSearchInput.addEventListener('blur', () => {
+                mobileSearchContainer.classList.remove('focused');
+            });
+            
+            // Handle Enter key in search
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchProducts(e.target.value);
+                }
+            });
+            
+            mobileSearchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    searchProducts(e.target.value);
+                }
+            });
         }
-
+        
         // Initialize the app
         init();
     </script>
