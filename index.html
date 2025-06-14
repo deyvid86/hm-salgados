@@ -3,48 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delícia Express - Delivery de Lanches</title>
+    <title>Lanchonete Delivery</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Custom animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .category-btn.active {
+            background-color: #f59e0b;
+            color: white;
         }
-        
-        .fade-in {
-            animation: fadeIn 0.3s ease-out forwards;
+        .cart-item {
+            transition: all 0.3s ease;
         }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .cart-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
+        .delivery-option.active {
+            border-color: #10b981;
+            background-color: #ecfdf5;
         }
-        
-        ::-webkit-scrollbar-thumb {
-            background: #f59e0b;
-            border-radius: 4px;
+        .payment-option.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
         }
-        
-        /* Pulse animation for cart */
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
-        
-        .pulse {
-            animation: pulse 0.5s ease;
-        }
-        
-        /* Search focus effect */
-        .search-container:focus-within {
-            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.5);
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
         }
     </style>
 </head>
@@ -53,256 +42,224 @@
     <header class="sticky top-0 z-50 bg-white shadow-md">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="https://via.placeholder.com/50" alt="Logo" class="h-10 w-10 rounded-full mr-2">
-                <h1 class="text-xl font-bold text-orange-500">Delícia Express</h1>
+                <img src="https://via.placeholder.com/50" alt="Logo" class="h-10 w-10 rounded-full">
+                <h1 class="ml-3 text-xl font-bold text-gray-800">Lanchonete Sabor & Cia</h1>
             </div>
-            
             <div class="relative">
-                <button id="cartButton" class="relative text-gray-700 hover:text-orange-500">
+                <button id="cart-btn" class="relative text-gray-700 hover:text-gray-900">
                     <i class="fas fa-shopping-cart text-2xl"></i>
-                    <span id="cartCount" class="absolute -top-2 -right-2 bg-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- Banner -->
-    <div class="relative">
-        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Banner" class="w-full h-48 object-cover">
-        <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-            <div class="text-center text-white px-4">
-                <h2 class="text-2xl font-bold mb-2">Os melhores lanches da cidade!</h2>
-                <p class="text-sm">Entregamos em até 30 minutos</p>
+    <section class="banner text-white py-12 px-4">
+        <div class="container mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Os melhores lanches da cidade!</h2>
+            <p class="text-xl mb-6">Delivery rápido e sabor garantido</p>
+            <div class="bg-white text-gray-800 inline-block px-4 py-2 rounded-full">
+                <i class="fas fa-clock mr-2 text-yellow-500"></i>
+                <span class="font-semibold">Aberto agora: 10:00 - 22:00</span>
             </div>
         </div>
-    </div>
-
-    <!-- Opening Hours -->
-    <div class="bg-orange-500 text-white py-2 px-4 text-center">
-        <p class="text-sm font-medium">
-            <i class="fas fa-clock mr-1"></i> Aberto agora: 10:00 - 22:00
-        </p>
-    </div>
+    </section>
 
     <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6">
-        <!-- Search Bar -->
-        <div class="mb-6">
-            <div class="search-container relative flex items-center bg-white rounded-lg border border-gray-300 overflow-hidden transition duration-300">
-                <input type="text" id="searchInput" placeholder="Buscar lanches, pizzas, bebidas..." 
-                       class="w-full py-2 px-4 focus:outline-none text-gray-700">
-                <button id="searchButton" class="px-4 py-2 bg-orange-500 text-white">
-                    <i class="fas fa-search"></i>
-                </button>
-                <button id="clearSearch" class="absolute right-14 text-gray-400 hover:text-gray-600 hidden">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        </div>
-
+    <main class="container mx-auto px-4 py-8">
         <!-- Categories -->
-        <div class="mb-8">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Categorias</h2>
-            <div class="flex space-x-3 overflow-x-auto pb-2">
-                <button class="category-btn px-4 py-2 bg-orange-500 text-white rounded-full whitespace-nowrap" data-category="all">Todos</button>
-                <button class="category-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-full whitespace-nowrap" data-category="burgers">Hambúrgueres</button>
-                <button class="category-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-full whitespace-nowrap" data-category="pizzas">Pizzas</button>
-                <button class="category-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-full whitespace-nowrap" data-category="drinks">Bebidas</button>
-                <button class="category-btn px-4 py-2 bg-gray-200 text-gray-800 rounded-full whitespace-nowrap" data-category="desserts">Sobremesas</button>
+        <div class="mb-8 overflow-x-auto">
+            <div class="flex space-x-2 pb-2">
+                <button class="category-btn active px-4 py-2 rounded-full bg-yellow-500 text-white font-medium whitespace-nowrap" data-category="all">Todos</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="lanches">Lanches</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="pastel">Pastéis</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="bebidas">Bebidas</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="combos">Combos</button>
             </div>
         </div>
 
-        <!-- Products -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="productsContainer">
-            <!-- Product items will be added here by JavaScript -->
+        <!-- Products Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12" id="products-grid">
+            <!-- Product cards will be inserted here by JavaScript -->
         </div>
     </main>
 
     <!-- Cart Sidebar -->
-    <div id="cartSidebar" class="fixed inset-0 z-50 overflow-hidden hidden">
-        <div class="absolute inset-0 bg-black bg-opacity-50" id="cartOverlay"></div>
-        <div class="absolute inset-y-0 right-0 max-w-full flex">
-            <div class="relative w-screen max-w-md">
-                <div class="h-full flex flex-col bg-white shadow-xl">
-                    <div class="flex items-start justify-between px-4 pt-4 sm:px-6">
-                        <h2 class="text-lg font-bold text-gray-900">Seu Pedido</h2>
-                        <button id="closeCart" class="text-gray-400 hover:text-gray-500">
-                            <i class="fas fa-times text-xl"></i>
+    <div id="cart-sidebar" class="fixed inset-y-0 right-0 w-full sm:w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-50 overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Seu Carrinho</h2>
+                <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div id="cart-items" class="mb-6">
+                <!-- Cart items will be inserted here by JavaScript -->
+                <div id="empty-cart-message" class="text-center py-10">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Seu carrinho está vazio</p>
+                </div>
+            </div>
+
+            <div id="cart-summary" class="border-t border-gray-200 pt-4 hidden">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Subtotal</span>
+                    <span id="subtotal" class="font-medium">R$ 0.00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="text-gray-600">Taxa de entrega</span>
+                    <span id="delivery-fee" class="font-medium">R$ 5.00</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold mb-6">
+                    <span>Total</span>
+                    <span id="total">R$ 0.00</span>
+                </div>
+
+                <!-- Delivery Options -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Tipo de entrega</h3>
+                    <div class="space-y-2">
+                        <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="delivery">
+                            <div class="flex items-center">
+                                <i class="fas fa-motorcycle mr-3 text-green-500"></i>
+                                <div>
+                                    <p class="font-medium">Delivery</p>
+                                    <p class="text-sm text-gray-500">Entregamos no seu endereço</p>
+                                </div>
+                            </div>
+                            <div id="delivery-address-field" class="mt-3 hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Endereço completo</label>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Rua, número, bairro, complemento...">
+                            </div>
                         </button>
-                    </div>
-
-                    <div class="flex-1 overflow-y-auto px-2 sm:px-4">
-                        <ul id="cartItems" class="space-y-3 py-2">
-                            <!-- Cart items will be added here by JavaScript -->
-                            <li class="py-4 text-center text-gray-500" id="emptyCartMessage">
-                                Seu carrinho está vazio
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="border-t border-gray-200 py-4 px-4 sm:px-6">
-                        <!-- Delivery Options - Simplified -->
-                        <div class="mb-4">
-                            <h3 class="text-sm font-medium text-gray-900 mb-1">Entrega</h3>
-                            <div class="flex space-x-4">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="deliveryType" value="delivery" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300" checked>
-                                    <span class="ml-2 text-xs">Delivery</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="deliveryType" value="pickup" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Retirar</span>
-                                </label>
+                        
+                        <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="pickup">
+                            <div class="flex items-center">
+                                <i class="fas fa-store mr-3 text-blue-500"></i>
+                                <div>
+                                    <p class="font-medium">Retirar no balcão</p>
+                                    <p class="text-sm text-gray-500">Av. Principal, 123 - Centro</p>
+                                </div>
                             </div>
-                            
-                            <!-- Delivery Address -->
-                            <div id="deliveryAddressContainer" class="mt-2">
-                                <label class="block text-xs text-gray-700 mb-1">Endereço de Entrega</label>
-                                <input type="text" placeholder="Rua, número, complemento..." class="w-full text-xs border border-gray-300 rounded p-2">
+                        </button>
+                        
+                        <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="schedule">
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-alt mr-3 text-purple-500"></i>
+                                <div>
+                                    <p class="font-medium">Agendar</p>
+                                    <p class="text-sm text-gray-500">Escolha data e hora</p>
+                                </div>
                             </div>
-                            
-                            <!-- Pickup Address -->
-                            <div id="pickupAddressContainer" class="mt-2 hidden">
-                                <p class="text-xs text-gray-700">Endereço para retirada:</p>
-                                <p class="text-xs font-medium">Rua Exemplo, 123 - Centro - Sua Cidade/SP</p>
-                            </div>
-                            
-                            <!-- Scheduling -->
-                            <div class="mt-2">
-                                <label class="inline-flex items-center">
-                                    <input type="checkbox" id="schedule" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded">
-                                    <span class="ml-2 text-xs">Agendar entrega</span>
-                                </label>
-                            </div>
-                            <div id="scheduleFields" class="mt-2 hidden">
-                                <div class="grid grid-cols-2 gap-2">
+                            <div id="schedule-fields" class="mt-3 hidden">
+                                <div class="grid grid-cols-2 gap-3">
                                     <div>
-                                        <label class="block text-xs text-gray-700 mb-1">Data</label>
-                                        <input type="date" class="w-full text-xs border border-gray-300 rounded p-1">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Data</label>
+                                        <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                                     </div>
                                     <div>
-                                        <label class="block text-xs text-gray-700 mb-1">Hora</label>
-                                        <input type="time" class="w-full text-xs border border-gray-300 rounded p-1">
+                                        <label class="block text-sm font-medium text-gray-700 mb-1">Hora</label>
+                                        <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-md">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <!-- Payment Options - Simplified -->
-                        <div class="mb-4">
-                            <h3 class="text-sm font-medium text-gray-900 mb-1">Pagamento</h3>
-                            <div class="grid grid-cols-2 gap-2">
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" value="pix" id="pix" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">PIX</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" value="credit" id="credit" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Cartão de Crédito</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" value="debit" id="debit" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Cartão de Débito</span>
-                                </label>
-                                <label class="inline-flex items-center">
-                                    <input type="radio" name="payment" value="cash" id="cash" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <span class="ml-2 text-xs">Dinheiro</span>
-                                </label>
-                            </div>
-                            
-                            <!-- PIX Key Container -->
-                            <div id="pixKeyContainer" class="mt-2 hidden">
-                                <p class="text-xs text-gray-700 mb-1">Chave PIX:</p>
-                                <div class="flex items-center bg-gray-100 p-2 rounded">
-                                    <span class="text-xs font-mono flex-1">123e4567-e12b-12d1-a456-426655440000</span>
-                                    <button class="copy-pix-btn text-orange-500 hover:text-orange-600 ml-2" title="Copiar chave">
-                                        <i class="fas fa-copy text-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <!-- Cash Change Container -->
-                            <div id="cashChangeContainer" class="mt-2 hidden">
-                                <label class="block text-xs text-gray-700 mb-1">Troco para quanto?</label>
-                                <input type="text" placeholder="Ex: 50,00" class="w-full text-xs border border-gray-300 rounded p-2">
-                            </div>
-                        </div>
-                        
-                        <!-- Order Summary -->
-                        <div class="border-t border-gray-200 pt-4 mb-4">
-                            <div class="flex justify-between text-base font-medium text-gray-900">
-                                <p>Subtotal</p>
-                                <p id="cartSubtotal">R$ 0,00</p>
-                            </div>
-                            <div class="flex justify-between text-sm text-gray-500 mt-1">
-                                <p>Taxa de entrega</p>
-                                <p id="deliveryFee">R$ 5,00</p>
-                            </div>
-                            <div class="flex justify-between text-lg font-bold text-gray-900 mt-2">
-                                <p>Total</p>
-                                <p id="cartTotal">R$ 5,00</p>
-                            </div>
-                        </div>
-                        
-                        <button id="checkoutButton" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 px-4 rounded-md font-medium transition duration-300 flex items-center justify-center">
-                            <i class="fab fa-whatsapp mr-2"></i> Finalizar via WhatsApp
                         </button>
                     </div>
                 </div>
+
+                <!-- Payment Options -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Forma de pagamento</h3>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="payment-option p-3 border rounded-lg text-center" data-type="pix">
+                            <i class="fas fa-qrcode text-xl mb-1 text-green-600"></i>
+                            <p class="text-sm">PIX</p>
+                        </button>
+                        <button class="payment-option p-3 border rounded-lg text-center" data-type="credit">
+                            <i class="far fa-credit-card text-xl mb-1 text-blue-600"></i>
+                            <p class="text-sm">Crédito</p>
+                        </button>
+                        <button class="payment-option p-3 border rounded-lg text-center" data-type="debit">
+                            <i class="fas fa-credit-card text-xl mb-1 text-purple-600"></i>
+                            <p class="text-sm">Débito</p>
+                        </button>
+                        <button class="payment-option p-3 border rounded-lg text-center" data-type="cash">
+                            <i class="fas fa-money-bill-wave text-xl mb-1 text-yellow-600"></i>
+                            <p class="text-sm">Dinheiro</p>
+                        </button>
+                    </div>
+                    
+                    <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
+                        <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
+                        <button class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
+                            <i class="fas fa-copy mr-2"></i> Copiar chave
+                        </button>
+                    </div>
+                    
+                    <div id="cash-change" class="mt-3 hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Precisa de troco para quanto?</label>
+                        <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="R$ 0,00">
+                    </div>
+                </div>
+
+                <!-- Customer Info -->
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold mb-3">Seus dados</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nome</label>
+                            <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Seu nome">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Telefone</label>
+                            <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="(00) 00000-0000">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Checkout Button -->
+                <button id="checkout-btn" class="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-md text-lg font-bold flex items-center justify-center">
+                    <i class="fab fa-whatsapp mr-2 text-xl"></i> Finalizar Pedido
+                </button>
             </div>
         </div>
     </div>
 
+    <!-- Overlay -->
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
     <!-- Product Modal -->
-    <div id="productModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75" id="modalOverlay"></div>
-            </div>
-
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-            <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <div class="flex justify-between items-start">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900" id="modalProductName">Produto</h3>
-                                <button id="closeModal" class="text-gray-400 hover:text-gray-500">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            
-                            <div class="mt-2">
-                                <img id="modalProductImage" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                                
-                                <p class="text-sm text-gray-500" id="modalProductDescription">Descrição do produto</p>
-                                
-                                <div class="mt-4 flex items-center justify-between">
-                                    <span class="text-xl font-bold text-orange-500" id="modalProductPrice">R$ 0,00</span>
-                                    <div class="flex items-center">
-                                        <button class="quantity-btn minus bg-gray-200 text-gray-700 px-3 py-1 rounded-l-md">
-                                            <i class="fas fa-minus"></i>
-                                        </button>
-                                        <span class="quantity-value bg-gray-100 px-4 py-1">1</span>
-                                        <button class="quantity-btn plus bg-gray-200 text-gray-700 px-3 py-1 rounded-r-md">
-                                            <i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                                
-                                <div class="mt-4">
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">Observações</label>
-                                    <textarea id="productNotes" class="w-full border border-gray-300 rounded-md p-2 text-sm" placeholder="Ex: Sem cebola, maionese à parte..."></textarea>
-                                </div>
-                            </div>
-                        </div>
+    <div id="product-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <h3 id="modal-product-name" class="text-xl font-bold text-gray-800"></h3>
+                        <p id="modal-product-price" class="text-lg text-yellow-600 font-medium"></p>
                     </div>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
                 </div>
-
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="button" id="addToCartBtn" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-orange-500 text-base font-medium text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Adicionar ao carrinho
+                
+                <img id="modal-product-image" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
+                    <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ex: sem cebola, maionese à parte..."></textarea>
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center border rounded-lg">
+                        <button class="quantity-btn px-3 py-1 text-xl" data-action="decrease">-</button>
+                        <span class="quantity-display px-3 py-1">1</span>
+                        <button class="quantity-btn px-3 py-1 text-xl" data-action="increase">+</button>
+                    </div>
+                    
+                    <button id="add-to-cart-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium">
+                        Adicionar <span id="modal-total-price" class="font-bold">R$ 0.00</span>
                     </button>
                 </div>
             </div>
@@ -314,67 +271,67 @@
         const products = [
             {
                 id: 1,
-                name: "Hambúrguer Clássico",
-                description: "Pão, hambúrguer 150g, queijo, alface, tomate e maionese",
-                price: 18.90,
-                category: "burgers",
+                name: "X-Tudo",
+                price: 19.95,
+                category: "lanches",
+                description: "Pão, hambúrguer, queijo, presunto, ovo, alface, tomate, maionese",
                 image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80"
             },
             {
                 id: 2,
-                name: "Hambúrguer Bacon",
-                description: "Pão, hambúrguer 180g, queijo, bacon crocante, cebola caramelizada e molho barbecue",
-                price: 22.50,
-                category: "burgers",
-                image: "https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=930&q=80"
+                name: "Bauru Especial",
+                price: 10.49,
+                category: "lanches",
+                description: "Pão francês, rosbife, queijo derretido, tomate, picles",
+                image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80"
             },
             {
                 id: 3,
-                name: "Pizza Margherita",
-                description: "Molho de tomate, mussarela, manjericão fresco e azeite",
-                price: 45.00,
-                category: "pizzas",
-                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                name: "Pastel de Calabresa",
+                price: 7.50,
+                category: "pastel",
+                description: "Massa crocante recheada com calabresa e queijo",
+                image: "https://images.unsplash.com/photo-1630448489165-1e4d9a1e0a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
             },
             {
                 id: 4,
-                name: "Pizza Calabresa",
-                description: "Molho de tomate, mussarela, calabresa fatiada e cebola",
-                price: 48.00,
-                category: "pizzas",
-                image: "https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+                name: "Pastel de Queijo",
+                price: 7.50,
+                category: "pastel",
+                description: "Massa crocante recheada com queijo derretido",
+                image: "https://images.unsplash.com/photo-1630448489165-1e4d9a1e0a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
             },
             {
                 id: 5,
-                name: "Refrigerante Lata",
-                description: "Coca-Cola, Guaraná, Fanta ou Sprite",
-                price: 6.00,
-                category: "drinks",
-                image: "https://images.unsplash.com/photo-1554866585-cd94860890b7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=715&q=80"
+                name: "Suco de Goiaba",
+                price: 7.50,
+                category: "bebidas",
+                description: "Suco natural de goiaba 500ml",
+                image: "https://images.unsplash.com/photo-1625576880768-731cbc6ab7c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
             },
             {
                 id: 6,
-                name: "Suco Natural",
-                description: "Laranja, abacaxi, maracujá ou limão",
-                price: 8.00,
-                category: "drinks",
-                image: "https://images.unsplash.com/photo-1603569283847-aa6f53c5d0fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                name: "Refrigerante Lata",
+                price: 5.00,
+                category: "bebidas",
+                description: "Refrigerante em lata 350ml",
+                image: "https://images.unsplash.com/photo-1610873167013-2dd675d30ef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
             },
             {
                 id: 7,
-                name: "Brownie",
-                description: "Brownie de chocolate com nozes e sorvete de creme",
-                price: 12.00,
-                category: "desserts",
-                image: "https://images.unsplash.com/photo-1564355808539-22fda35bed7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80"
+                name: "Combo Casal",
+                price: 35.00,
+                category: "combos",
+                description: "2 X-Tudo + 2 Refrigerantes Lata",
+                image: "https://images.unsplash.com/photo-1547584370-accdafe7276a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
             },
             {
                 id: 8,
-                name: "Sorvete",
-                description: "Casquinha com 2 bolas - sabores: chocolate, creme, morango ou flocos",
-                price: 9.00,
-                category: "desserts",
-                image: "https://images.unsplash.com/photo-1560008581-09826d1de69e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=744&q=80"
+                name: "Combo Família",
+                price: 65.00,
+                category: "combos",
+                description: "4 X-Tudo + 4 Refrigerantes Lata + 1 Porção de Batata",
+                image: "https://images.unsplash.com/photo-1547584370-accdafe7276a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
             }
         ];
 
@@ -382,48 +339,38 @@
         let cart = [];
         let currentProduct = null;
         let currentQuantity = 1;
-        let currentCategory = 'all';
-        let currentSearchTerm = '';
+        let deliveryType = null;
+        let paymentType = null;
 
-        // DOM elements
-        const productsContainer = document.getElementById('productsContainer');
-        const cartSidebar = document.getElementById('cartSidebar');
-        const cartOverlay = document.getElementById('cartOverlay');
-        const cartButton = document.getElementById('cartButton');
-        const closeCart = document.getElementById('closeCart');
-        const cartItems = document.getElementById('cartItems');
-        const emptyCartMessage = document.getElementById('emptyCartMessage');
-        const cartCount = document.getElementById('cartCount');
-        const cartSubtotal = document.getElementById('cartSubtotal');
-        const cartTotal = document.getElementById('cartTotal');
-        const productModal = document.getElementById('productModal');
-        const modalOverlay = document.getElementById('modalOverlay');
-        const closeModal = document.getElementById('closeModal');
-        const modalProductName = document.getElementById('modalProductName');
-        const modalProductDescription = document.getElementById('modalProductDescription');
-        const modalProductPrice = document.getElementById('modalProductPrice');
-        const modalProductImage = document.getElementById('modalProductImage');
-        const quantityValue = document.querySelector('.quantity-value');
-        const minusBtn = document.querySelector('.quantity-btn.minus');
-        const plusBtn = document.querySelector('.quantity-btn.plus');
-        const addToCartBtn = document.getElementById('addToCartBtn');
-        const productNotes = document.getElementById('productNotes');
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        const deliveryRadio = document.getElementById('delivery');
-        const pickupRadio = document.getElementById('pickup');
-        const deliveryAddressContainer = document.getElementById('deliveryAddressContainer');
-        const pickupAddressContainer = document.getElementById('pickupAddressContainer');
-        const scheduleCheckbox = document.getElementById('schedule');
-        const scheduleFields = document.getElementById('scheduleFields');
-        const pixRadio = document.getElementById('pix');
-        const pixKeyContainer = document.getElementById('pixKeyContainer');
-        const cashRadio = document.getElementById('cash');
-        const cashChangeContainer = document.getElementById('cashChangeContainer');
-        const creditRadio = document.getElementById('credit');
-        const debitRadio = document.getElementById('debit');
-        const searchInput = document.getElementById('searchInput');
-        const searchButton = document.getElementById('searchButton');
-        const clearSearch = document.getElementById('clearSearch');
+        // DOM Elements
+        const productsGrid = document.getElementById('products-grid');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('overlay');
+        const cartBtn = document.getElementById('cart-btn');
+        const closeCartBtn = document.getElementById('close-cart');
+        const cartItems = document.getElementById('cart-items');
+        const emptyCartMessage = document.getElementById('empty-cart-message');
+        const cartSummary = document.getElementById('cart-summary');
+        const subtotalEl = document.getElementById('subtotal');
+        const totalEl = document.getElementById('total');
+        const cartCount = document.getElementById('cart-count');
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const productModal = document.getElementById('product-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+        const addToCartBtn = document.getElementById('add-to-cart-btn');
+        const modalProductName = document.getElementById('modal-product-name');
+        const modalProductPrice = document.getElementById('modal-product-price');
+        const modalProductImage = document.getElementById('modal-product-image');
+        const modalTotalPrice = document.getElementById('modal-total-price');
+        const quantityDisplay = document.querySelector('.quantity-display');
+        const quantityBtns = document.querySelectorAll('.quantity-btn');
+        const deliveryOptions = document.querySelectorAll('.delivery-option');
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        const deliveryAddressField = document.getElementById('delivery-address-field');
+        const scheduleFields = document.getElementById('schedule-fields');
+        const pixInfo = document.getElementById('pix-info');
+        const cashChange = document.getElementById('cash-change');
+        const checkoutBtn = document.getElementById('checkout-btn');
 
         // Initialize the app
         function init() {
@@ -431,218 +378,39 @@
             setupEventListeners();
         }
 
-        // Render products to the page
-        function renderProducts(filterCategory = 'all', searchTerm = '') {
-            productsContainer.innerHTML = '';
+        // Render products based on category
+        function renderProducts(category = 'all') {
+            productsGrid.innerHTML = '';
             
-            let filteredProducts = products;
-            
-            // Filter by category
-            if (filterCategory !== 'all') {
-                filteredProducts = filteredProducts.filter(product => product.category === filterCategory);
-            }
-            
-            // Filter by search term
-            if (searchTerm) {
-                const searchLower = searchTerm.toLowerCase();
-                filteredProducts = filteredProducts.filter(product => 
-                    product.name.toLowerCase().includes(searchLower) || 
-                    product.description.toLowerCase().includes(searchLower)
-                );
-            }
-            
-            if (filteredProducts.length === 0) {
-                productsContainer.innerHTML = '<p class="col-span-full text-center text-gray-500">Nenhum produto encontrado.</p>';
-                return;
-            }
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
             
             filteredProducts.forEach(product => {
-                const productElement = document.createElement('div');
-                productElement.className = 'bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300 fade-in';
-                productElement.innerHTML = `
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300';
+                productCard.innerHTML = `
                     <div class="h-40 overflow-hidden">
                         <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover">
                     </div>
                     <div class="p-4">
-                        <h3 class="font-bold text-lg text-gray-800 mb-1">${product.name}</h3>
+                        <h3 class="font-bold text-lg mb-1">${product.name}</h3>
                         <p class="text-gray-600 text-sm mb-2">${product.description}</p>
-                        <div class="flex justify-between items-center mt-3">
-                            <span class="font-bold text-orange-500">R$ ${product.price.toFixed(2)}</span>
-                            <button class="add-to-cart-btn bg-orange-500 hover:bg-orange-600 text-white py-1 px-3 rounded text-sm transition duration-300" data-id="${product.id}">
+                        <div class="flex justify-between items-center">
+                            <span class="text-yellow-600 font-bold">R$ ${product.price.toFixed(2)}</span>
+                            <button class="add-product-btn bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md text-sm font-medium" data-id="${product.id}">
                                 Adicionar
                             </button>
                         </div>
                     </div>
                 `;
-                productsContainer.appendChild(productElement);
+                productsGrid.appendChild(productCard);
             });
             
             // Add event listeners to the new buttons
-            document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const productId = parseInt(e.target.getAttribute('data-id'));
-                    openProductModal(productId);
-                });
+            document.querySelectorAll('.add-product-btn').forEach(btn => {
+                btn.addEventListener('click', () => openProductModal(parseInt(btn.dataset.id)));
             });
-        }
-
-        // Set up event listeners
-        function setupEventListeners() {
-            // Cart toggle
-            cartButton.addEventListener('click', openCart);
-            closeCart.addEventListener('click', closeCartSidebar);
-            cartOverlay.addEventListener('click', closeCartSidebar);
-            
-            // Modal events
-            closeModal.addEventListener('click', closeProductModal);
-            modalOverlay.addEventListener('click', closeProductModal);
-            
-            // Quantity buttons
-            minusBtn.addEventListener('click', () => {
-                if (currentQuantity > 1) {
-                    currentQuantity--;
-                    quantityValue.textContent = currentQuantity;
-                    updateModalPrice();
-                }
-            });
-            
-            plusBtn.addEventListener('click', () => {
-                currentQuantity++;
-                quantityValue.textContent = currentQuantity;
-                updateModalPrice();
-            });
-            
-            // Add to cart
-            addToCartBtn.addEventListener('click', addToCart);
-            
-            // Category filters
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const category = button.getAttribute('data-category');
-                    currentCategory = category;
-                    filterProducts(category, currentSearchTerm);
-                    
-                    // Update active button
-                    categoryButtons.forEach(btn => {
-                        btn.classList.remove('bg-orange-500', 'text-white');
-                        btn.classList.add('bg-gray-200', 'text-gray-800');
-                    });
-                    
-                    button.classList.remove('bg-gray-200', 'text-gray-800');
-                    button.classList.add('bg-orange-500', 'text-white');
-                });
-            });
-            
-            // Delivery options
-            document.querySelectorAll('input[name="deliveryType"]').forEach(radio => {
-                radio.addEventListener('change', () => {
-                    if (radio.value === 'delivery') {
-                        document.getElementById('deliveryAddressContainer').classList.remove('hidden');
-                        document.getElementById('pickupAddressContainer').classList.add('hidden');
-                    } else {
-                        document.getElementById('pickupAddressContainer').classList.remove('hidden');
-                        document.getElementById('deliveryAddressContainer').classList.add('hidden');
-                    }
-                });
-            });
-            
-            // Scheduling
-            const scheduleCheckbox = document.getElementById('schedule');
-            const scheduleFields = document.getElementById('scheduleFields');
-            
-            scheduleCheckbox.addEventListener('change', () => {
-                if (scheduleCheckbox.checked) {
-                    scheduleFields.classList.remove('hidden');
-                } else {
-                    scheduleFields.classList.add('hidden');
-                }
-            });
-            
-            // Payment options
-            pixRadio.addEventListener('change', () => {
-                if (pixRadio.checked) {
-                    pixKeyContainer.classList.remove('hidden');
-                } else {
-                    pixKeyContainer.classList.add('hidden');
-                }
-            });
-            
-            cashRadio.addEventListener('change', () => {
-                if (cashRadio.checked) {
-                    cashChangeContainer.classList.remove('hidden');
-                } else {
-                    cashChangeContainer.classList.add('hidden');
-                }
-            });
-            
-            // Search functionality
-            searchButton.addEventListener('click', () => {
-                currentSearchTerm = searchInput.value.trim();
-                filterProducts(currentCategory, currentSearchTerm);
-                
-                if (currentSearchTerm) {
-                    clearSearch.classList.remove('hidden');
-                } else {
-                    clearSearch.classList.add('hidden');
-                }
-            });
-            
-            searchInput.addEventListener('keyup', (e) => {
-                if (e.key === 'Enter') {
-                    currentSearchTerm = searchInput.value.trim();
-                    filterProducts(currentCategory, currentSearchTerm);
-                    
-                    if (currentSearchTerm) {
-                        clearSearch.classList.remove('hidden');
-                    } else {
-                        clearSearch.classList.add('hidden');
-                    }
-                }
-            });
-            
-            clearSearch.addEventListener('click', () => {
-                searchInput.value = '';
-                currentSearchTerm = '';
-                filterProducts(currentCategory, '');
-                clearSearch.classList.add('hidden');
-            });
-
-            // Payment option changes
-            document.querySelectorAll('input[name="payment"]').forEach(radio => {
-                radio.addEventListener('change', () => {
-                    if (radio.value === 'pix') {
-                        pixKeyContainer.classList.remove('hidden');
-                        cashChangeContainer.classList.add('hidden');
-                    } else if (radio.value === 'cash') {
-                        cashChangeContainer.classList.remove('hidden');
-                        pixKeyContainer.classList.add('hidden');
-                    } else {
-                        pixKeyContainer.classList.add('hidden');
-                        cashChangeContainer.classList.add('hidden');
-                    }
-                });
-            });
-
-            // Copy PIX key functionality
-            document.addEventListener('click', (e) => {
-                if (e.target.closest('.copy-pix-btn')) {
-                    const pixKey = '123e4567-e12b-12d1-a456-426655440000';
-                    navigator.clipboard.writeText(pixKey).then(() => {
-                        const btn = e.target.closest('.copy-pix-btn');
-                        btn.innerHTML = '<i class="fas fa-check text-sm"></i>';
-                        btn.classList.add('text-green-500');
-                        setTimeout(() => {
-                            btn.innerHTML = '<i class="fas fa-copy text-sm"></i>';
-                            btn.classList.remove('text-green-500');
-                        }, 2000);
-                    });
-                }
-            });
-        }
-
-        // Filter products by category and search term
-        function filterProducts(category, searchTerm = '') {
-            renderProducts(category, searchTerm);
         }
 
         // Open product modal
@@ -651,341 +419,305 @@
             currentQuantity = 1;
             
             modalProductName.textContent = currentProduct.name;
-            modalProductDescription.textContent = currentProduct.description;
             modalProductPrice.textContent = `R$ ${currentProduct.price.toFixed(2)}`;
             modalProductImage.src = currentProduct.image;
             modalProductImage.alt = currentProduct.name;
-            quantityValue.textContent = currentQuantity;
-            productNotes.value = '';
+            quantityDisplay.textContent = currentQuantity;
+            updateModalTotalPrice();
             
             productModal.classList.remove('hidden');
+            overlay.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
         }
 
         // Close product modal
         function closeProductModal() {
             productModal.classList.add('hidden');
-            document.body.style.overflow = 'auto';
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
         }
 
-        // Update modal price based on quantity
-        function updateModalPrice() {
+        // Update modal total price
+        function updateModalTotalPrice() {
             const total = currentProduct.price * currentQuantity;
-            modalProductPrice.textContent = `R$ ${total.toFixed(2)}`;
+            modalTotalPrice.textContent = `R$ ${total.toFixed(2)}`;
         }
 
-        // Add product to cart
+        // Add item to cart
         function addToCart() {
-            const notes = productNotes.value.trim();
+            const notes = document.querySelector('#product-modal textarea').value;
             
-            const cartItem = {
-                id: currentProduct.id,
-                name: currentProduct.name,
-                price: currentProduct.price,
-                quantity: currentQuantity,
-                notes: notes,
-                image: currentProduct.image
-            };
-            
-            // Check if item already exists in cart
             const existingItemIndex = cart.findIndex(item => 
-                item.id === cartItem.id && item.notes === cartItem.notes
+                item.product.id === currentProduct.id && item.notes === notes
             );
             
             if (existingItemIndex !== -1) {
-                // Update quantity if item exists
-                cart[existingItemIndex].quantity += cartItem.quantity;
+                cart[existingItemIndex].quantity += currentQuantity;
             } else {
-                // Add new item to cart
-                cart.push(cartItem);
+                cart.push({
+                    product: currentProduct,
+                    quantity: currentQuantity,
+                    notes: notes
+                });
             }
             
             updateCart();
-            saveCart();
             closeProductModal();
-            
-            // Show success message
-            const successMsg = document.createElement('div');
-            successMsg.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg flex items-center';
-            successMsg.innerHTML = `
-                <i class="fas fa-check-circle mr-2"></i>
-                <span>Item adicionado ao carrinho!</span>
-            `;
-            document.body.appendChild(successMsg);
-            
-            setTimeout(() => {
-                successMsg.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-                setTimeout(() => successMsg.remove(), 300);
-            }, 2000);
         }
 
-        // Open cart sidebar
-        function openCart() {
-            cartSidebar.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-            renderCartItems();
-        }
-
-        // Close cart sidebar
-        function closeCartSidebar() {
-            cartSidebar.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Update cart count and total
+        // Update cart UI
         function updateCart() {
+            // Update cart count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
             
-            // Animate cart icon
-            cartButton.classList.add('pulse');
-            setTimeout(() => cartButton.classList.remove('pulse'), 500);
-            
-            // Calculate totals
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const deliveryFee = 5.00;
-            const total = subtotal + deliveryFee;
-            
-            cartSubtotal.textContent = `R$ ${subtotal.toFixed(2)}`;
-            cartTotal.textContent = `R$ ${total.toFixed(2)}`;
-            
-            // Save cart to localStorage
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-
-        // Render cart items
-        function renderCartItems() {
+            // Update cart items
             if (cart.length === 0) {
                 emptyCartMessage.classList.remove('hidden');
                 cartItems.innerHTML = '';
-                cartItems.appendChild(emptyCartMessage);
-                return;
-            }
-            
-            emptyCartMessage.classList.add('hidden');
-            cartItems.innerHTML = '';
-            
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                
-                const li = document.createElement('li');
-                li.className = 'bg-gray-50 rounded-lg p-3 fade-in';
-                li.innerHTML = `
-                    <div class="flex gap-3">
-                        <div class="flex-shrink-0 w-16 h-16 overflow-hidden rounded-lg border border-gray-200">
-                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
-                        </div>
-                        
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-medium text-gray-900">${item.name}</h3>
-                                <p class="font-bold text-orange-500">R$ ${itemTotal.toFixed(2)}</p>
-                            </div>
-                            <p class="text-xs text-gray-500 mb-1">R$ ${item.price.toFixed(2)} cada</p>
-                            ${item.notes ? `<p class="text-xs bg-white p-1 rounded text-gray-700">${item.notes}</p>` : ''}
-                            
-                            <div class="mt-2 flex items-center justify-between">
-                                <div class="flex items-center border border-gray-300 rounded-md bg-white">
-                                    <button class="cart-minus px-2 py-0.5 text-gray-600 hover:bg-gray-100" data-index="${index}">
-                                        <i class="fas fa-minus text-xs"></i>
-                                    </button>
-                                    <span class="px-2 text-sm">${item.quantity}</span>
-                                    <button class="cart-plus px-2 py-0.5 text-gray-600 hover:bg-gray-100" data-index="${index}">
-                                        <i class="fas fa-plus text-xs"></i>
-                                    </button>
-                                </div>
-                                
-                                <button class="cart-remove text-red-500 hover:text-red-700" data-index="${index}">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                cartItems.appendChild(li);
-            });
-            
-            // Add event listeners to cart buttons
-            document.querySelectorAll('.cart-minus').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.closest('button').getAttribute('data-index'));
-                    decreaseQuantity(index);
-                });
-            });
-            
-            document.querySelectorAll('.cart-plus').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.closest('button').getAttribute('data-index'));
-                    increaseQuantity(index);
-                });
-            });
-            
-            document.querySelectorAll('.cart-remove').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const index = parseInt(e.target.closest('button').getAttribute('data-index'));
-                    removeFromCart(index);
-                });
-            });
-        }
-
-        // Decrease item quantity in cart
-        function decreaseQuantity(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
+                cartSummary.classList.add('hidden');
             } else {
-                cart.splice(index, 1);
+                emptyCartMessage.classList.add('hidden');
+                cartSummary.classList.remove('hidden');
+                
+                cartItems.innerHTML = '';
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item bg-gray-50 rounded-lg p-3 mb-3';
+                    cartItem.innerHTML = `
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h4 class="font-medium">${item.product.name}</h4>
+                                ${item.notes ? `<p class="text-xs text-gray-500">${item.notes}</p>` : ''}
+                            </div>
+                            <button class="remove-item-btn text-gray-400 hover:text-red-500" data-index="${index}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center border rounded-lg">
+                                <button class="decrease-item-btn px-2 py-1" data-index="${index}">-</button>
+                                <span class="px-2">${item.quantity}</span>
+                                <button class="increase-item-btn px-2 py-1" data-index="${index}">+</button>
+                            </div>
+                            <span class="font-medium">R$ ${(item.product.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                
+                // Add event listeners to new buttons
+                document.querySelectorAll('.remove-item-btn').forEach(btn => {
+                    btn.addEventListener('click', () => removeFromCart(parseInt(btn.dataset.index)));
+                });
+                
+                document.querySelectorAll('.decrease-item-btn').forEach(btn => {
+                    btn.addEventListener('click', () => updateCartItemQuantity(parseInt(btn.dataset.index), -1));
+                });
+                
+                document.querySelectorAll('.increase-item-btn').forEach(btn => {
+                    btn.addEventListener('click', () => updateCartItemQuantity(parseInt(btn.dataset.index), 1));
+                });
+                
+                // Update totals
+                const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+                const deliveryFee = 5.00;
+                const total = subtotal + deliveryFee;
+                
+                subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
+                totalEl.textContent = `R$ ${total.toFixed(2)}`;
             }
-            
-            updateCart();
-            saveCart();
-            renderCartItems();
-        }
-
-        // Increase item quantity in cart
-        function increaseQuantity(index) {
-            cart[index].quantity++;
-            updateCart();
-            saveCart();
-            renderCartItems();
         }
 
         // Remove item from cart
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCart();
-            saveCart();
-            renderCartItems();
         }
 
-        // Load cart from localStorage
-        function loadCart() {
-            try {
-                const savedCart = localStorage.getItem('cart');
-                if (savedCart) {
-                    cart = JSON.parse(savedCart);
-                    // Validate loaded cart data
-                    if (!Array.isArray(cart)) {
-                        cart = [];
-                    }
-                    updateCart();
-                }
-            } catch (e) {
-                console.error('Error loading cart from localStorage:', e);
-                cart = [];
-            }
-        }
-
-        // Save cart to localStorage
-        function saveCart() {
-            try {
-                localStorage.setItem('cart', JSON.stringify(cart));
-            } catch (e) {
-                console.error('Error saving cart to localStorage:', e);
-            }
-        }
-
-        // Generate WhatsApp message with order details
-        function generateWhatsAppMessage() {
-            let message = "Olá, gostaria de fazer um pedido:\n\n";
+        // Update cart item quantity
+        function updateCartItemQuantity(index, change) {
+            const newQuantity = cart[index].quantity + change;
             
+            if (newQuantity < 1) {
+                removeFromCart(index);
+            } else {
+                cart[index].quantity = newQuantity;
+                updateCart();
+            }
+        }
+
+        // Open cart sidebar
+        function openCart() {
+            cartSidebar.classList.remove('translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close cart sidebar
+        function closeCart() {
+            cartSidebar.classList.add('translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Select delivery option
+        function selectDeliveryOption(option) {
+            deliveryOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            deliveryType = option.dataset.type;
+            
+            // Show/hide additional fields
+            deliveryAddressField.classList.add('hidden');
+            scheduleFields.classList.add('hidden');
+            
+            if (deliveryType === 'delivery') {
+                deliveryAddressField.classList.remove('hidden');
+            } else if (deliveryType === 'schedule') {
+                scheduleFields.classList.remove('hidden');
+            }
+        }
+
+        // Select payment option
+        function selectPaymentOption(option) {
+            paymentOptions.forEach(opt => opt.classList.remove('active'));
+            option.classList.add('active');
+            paymentType = option.dataset.type;
+            
+            // Show/hide additional fields
+            pixInfo.classList.add('hidden');
+            cashChange.classList.add('hidden');
+            
+            if (paymentType === 'pix') {
+                pixInfo.classList.remove('hidden');
+            } else if (paymentType === 'cash') {
+                cashChange.classList.remove('hidden');
+            }
+        }
+
+        // Format WhatsApp message
+        function formatWhatsAppMessage() {
+            if (cart.length === 0) return '';
+            
+            // Customer info
+            const name = document.querySelector('#cart-sidebar input[type="text"]').value || 'Não informado';
+            const phone = document.querySelector('#cart-sidebar input[type="tel"]').value || 'Não informado';
+            
+            // Delivery info
+            let deliveryInfo = '';
+            if (deliveryType === 'delivery') {
+                const address = document.querySelector('#delivery-address-field input').value || 'Não informado';
+                deliveryInfo = `📍Endereço: ${address}`;
+            } else if (deliveryType === 'pickup') {
+                deliveryInfo = '📍Retirar no balcão: Av. Principal, 123 - Centro';
+            } else if (deliveryType === 'schedule') {
+                const date = document.querySelector('#schedule-fields input[type="date"]').value || 'Não informado';
+                const time = document.querySelector('#schedule-fields input[type="time"]').value || 'Não informado';
+                deliveryInfo = `📅 Agendamento: ${date} às ${time}`;
+            }
+            
+            // Payment info
+            let paymentInfo = '';
+            if (paymentType === 'pix') {
+                paymentInfo = '💳Pagamento: PIX';
+            } else if (paymentType === 'credit') {
+                paymentInfo = '💳Pagamento: Cartão de Crédito';
+            } else if (paymentType === 'debit') {
+                paymentInfo = '💳Pagamento: Cartão de Débito';
+            } else if (paymentType === 'cash') {
+                const change = document.querySelector('#cash-change input').value || '0,00';
+                paymentInfo = `💳Pagamento: Dinheiro\n🪙Troco para: R$ ${change}`;
+            }
+            
+            // Products list
+            let productsList = '🛒Produtos:\n';
             cart.forEach(item => {
-                message += `- ${item.name} (${item.quantity}x) - R$ ${(item.price * item.quantity).toFixed(2)}\n`;
+                productsList += `- ${item.product.name} x${item.quantity} (R$ ${(item.product.price * item.quantity).toFixed(2)})`;
                 if (item.notes) {
-                    message += `  Obs: ${item.notes}\n`;
+                    productsList += ` - ${item.notes}`;
                 }
-                message += "\n";
+                productsList += '\n';
             });
             
-            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            // Total
+            const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
             const deliveryFee = 5.00;
             const total = subtotal + deliveryFee;
             
-            message += `\nSubtotal: R$ ${subtotal.toFixed(2)}\n`;
-            message += `Taxa de entrega: R$ ${deliveryFee.toFixed(2)}\n`;
-            message += `Total: R$ ${total.toFixed(2)}\n\n`;
-            
-            // Add delivery info
-            if (deliveryRadio.checked) {
-                const address = document.querySelector('#deliveryAddressContainer input').value;
-                message += `*Entrega*: ${address || 'Endereço não informado'}\n`;
-                
-                // Add scheduling info if checked
-                const scheduleCheckbox = document.getElementById('schedule');
-                if (scheduleCheckbox.checked) {
-                    const date = document.querySelector('#scheduleFields input[type="date"]').value;
-                    const time = document.querySelector('#scheduleFields input[type="time"]').value;
-                    if (date && time) {
-                        message += `*Agendado para*: ${date} às ${time}\n`;
-                    }
-                }
-            } else {
-                message += "*Retirada no balcão*\n";
-            }
-            
-            // Add payment method
-            if (pixRadio.checked) message += "*Pagamento*: PIX\n";
-            else if (creditRadio.checked) message += "*Pagamento*: Cartão de Crédito\n";
-            else if (debitRadio.checked) message += "*Pagamento*: Cartão de Débito\n";
-            else if (cashRadio.checked) {
-                const change = document.querySelector('#cashChangeContainer input').value;
-                message += `*Pagamento*: Dinheiro${change ? ` (Troco para R$ ${change})` : ''}\n`;
-            }
-            
-            return encodeURIComponent(message);
+            // Compose final message
+            return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n📞Telefone: ${phone}\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
         }
 
-        // Initialize the app when DOM is loaded
-        document.addEventListener('DOMContentLoaded', () => {
-            loadCart();
-            init();
+        // Setup event listeners
+        function setupEventListeners() {
+            // Category buttons
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderProducts(btn.dataset.category);
+                });
+            });
             
-            // Add WhatsApp checkout handler
-            document.getElementById('checkoutButton').addEventListener('click', (e) => {
-                e.preventDefault();
-
+            // Cart button
+            cartBtn.addEventListener('click', openCart);
+            closeCartBtn.addEventListener('click', closeCart);
+            overlay.addEventListener('click', closeCart);
+            
+            // Product modal
+            closeModalBtn.addEventListener('click', closeProductModal);
+            
+            // Quantity buttons
+            quantityBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (btn.dataset.action === 'increase') {
+                        currentQuantity++;
+                    } else if (btn.dataset.action === 'decrease' && currentQuantity > 1) {
+                        currentQuantity--;
+                    }
+                    quantityDisplay.textContent = currentQuantity;
+                    updateModalTotalPrice();
+                });
+            });
+            
+            // Add to cart button
+            addToCartBtn.addEventListener('click', addToCart);
+            
+            // Delivery options
+            deliveryOptions.forEach(option => {
+                option.addEventListener('click', () => selectDeliveryOption(option));
+            });
+            
+            // Payment options
+            paymentOptions.forEach(option => {
+                option.addEventListener('click', () => selectPaymentOption(option));
+            });
+            
+            // Checkout button
+            checkoutBtn.addEventListener('click', () => {
                 if (cart.length === 0) {
                     alert('Seu carrinho está vazio!');
                     return;
                 }
                 
-                // Validate delivery address if delivery is selected
-                const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
-                if (deliveryType === 'delivery') {
-                    const address = document.querySelector("#deliveryAddressContainer input").value;
-                    if (!address || address.trim() === '') {
-                        alert('Por favor, informe o endereço de entrega!');
-                        return;
-                    }
-                }
-                
-                // Validate payment method
-                const paymentMethod = document.querySelector('input[name="payment"]:checked');
-                if (!paymentMethod) {
-                    alert('Por favor, selecione um método de pagamento!');
+                if (!deliveryType) {
+                    alert('Por favor, selecione uma opção de entrega');
                     return;
                 }
                 
-                // Format phone number correctly (remove spaces, special chars)
-                const phoneNumber = "5584986725871".replace(/[^\d]/g, '');
-                
-                // Check if phone number is valid
-                if (!phoneNumber || phoneNumber.length < 11) {
-                    alert('Número de WhatsApp inválido!');
+                if (!paymentType) {
+                    alert('Por favor, selecione uma forma de pagamento');
                     return;
                 }
                 
-                const message = generateWhatsAppMessage();
+                const message = formatWhatsAppMessage();
                 const encodedMessage = encodeURIComponent(message);
-                
-                // Create WhatsApp URL with proper formatting
-                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-                
-                // Open WhatsApp in new tab (works better across devices)
-                window.open(whatsappUrl, '_blank');
+                window.open(`https://wa.me/5511999999999?text=${encodedMessage}`, '_blank');
             });
+        }
 
-        });
+        // Initialize the app
+        init();
     </script>
 </body>
 </html>
