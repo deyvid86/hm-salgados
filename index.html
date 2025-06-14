@@ -419,6 +419,8 @@
         const pixKeyContainer = document.getElementById('pixKeyContainer');
         const cashRadio = document.getElementById('cash');
         const cashChangeContainer = document.getElementById('cashChangeContainer');
+        const creditRadio = document.getElementById('credit');
+        const debitRadio = document.getElementById('debit');
         const searchInput = document.getElementById('searchInput');
         const searchButton = document.getElementById('searchButton');
         const clearSearch = document.getElementById('clearSearch');
@@ -699,6 +701,7 @@
             }
             
             updateCart();
+            saveCart();
             closeProductModal();
             
             // Show success message
@@ -835,6 +838,7 @@
             }
             
             updateCart();
+            saveCart();
             renderCartItems();
         }
 
@@ -842,6 +846,7 @@
         function increaseQuantity(index) {
             cart[index].quantity++;
             updateCart();
+            saveCart();
             renderCartItems();
         }
 
@@ -849,15 +854,34 @@
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCart();
+            saveCart();
             renderCartItems();
         }
 
         // Load cart from localStorage
         function loadCart() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCart();
+            try {
+                const savedCart = localStorage.getItem('cart');
+                if (savedCart) {
+                    cart = JSON.parse(savedCart);
+                    // Validate loaded cart data
+                    if (!Array.isArray(cart)) {
+                        cart = [];
+                    }
+                    updateCart();
+                }
+            } catch (e) {
+                console.error('Error loading cart from localStorage:', e);
+                cart = [];
+            }
+        }
+
+        // Save cart to localStorage
+        function saveCart() {
+            try {
+                localStorage.setItem('cart', JSON.stringify(cart));
+            } catch (e) {
+                console.error('Error saving cart to localStorage:', e);
             }
         }
 
@@ -917,16 +941,50 @@
             init();
             
             // Add WhatsApp checkout handler
-            document.getElementById('checkoutButton').addEventListener('click', () => {
+            document.getElementById('checkoutButton').addEventListener('click', (e) => {
+                e.preventDefault();
+
                 if (cart.length === 0) {
                     alert('Seu carrinho está vazio!');
                     return;
                 }
                 
-                const phoneNumber = "5584986725871"; // Replace with your WhatsApp number
+                // Validate delivery address if delivery is selected
+                const deliveryType = document.querySelector('input[name="deliveryType"]:checked').value;
+                if (deliveryType === 'delivery') {
+                    const address = document.querySelector("#deliveryAddressContainer input").value;
+                    if (!address || address.trim() === '') {
+                        alert('Por favor, informe o endereço de entrega!');
+                        return;
+                    }
+                }
+                
+                // Validate payment method
+                const paymentMethod = document.querySelector('input[name="payment"]:checked');
+                if (!paymentMethod) {
+                    alert('Por favor, selecione um método de pagamento!');
+                    return;
+                }
+                
+                // Format phone number correctly (remove spaces, special chars)
+                const phoneNumber = "5584986725871".replace(/[^\d]/g, '');
+                
+                // Check if phone number is valid
+                if (!phoneNumber || phoneNumber.length < 11) {
+                    alert('Número de WhatsApp inválido!');
+                    return;
+                }
+                
                 const message = generateWhatsAppMessage();
-                window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+                const encodedMessage = encodeURIComponent(message);
+                
+                // Create WhatsApp URL with proper formatting
+                const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+                
+                // Open WhatsApp in new tab (works better across devices)
+                window.open(whatsappUrl, '_blank');
             });
+
         });
     </script>
 </body>
