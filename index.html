@@ -124,95 +124,58 @@
         <div class="absolute inset-y-0 right-0 max-w-full flex">
             <div class="relative w-screen max-w-md">
                 <div class="h-full flex flex-col bg-white shadow-xl">
-                    <div class="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
-                        <div class="flex items-start justify-between">
-                            <h2 class="text-lg font-medium text-gray-900">Seu pedido</h2>
-                            <button id="closeCart" class="text-gray-400 hover:text-gray-500">
-                                <i class="fas fa-times text-xl"></i>
-                            </button>
-                        </div>
-
-                        <div class="mt-8">
-                            <div class="flow-root">
-                                <ul id="cartItems" class="-my-6 divide-y divide-gray-200">
-                                    <!-- Cart items will be added here by JavaScript -->
-                                    <li class="py-6 text-center text-gray-500" id="emptyCartMessage">
-                                        Seu carrinho está vazio
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
+                    <div class="flex items-start justify-between px-4 pt-4 sm:px-6">
+                        <h2 class="text-lg font-bold text-gray-900">Seu Pedido</h2>
+                        <button id="closeCart" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
                     </div>
 
-                    <div class="border-t border-gray-200 py-6 px-4 sm:px-6">
-                        <!-- Delivery Options -->
-                        <div class="mb-6">
-                            <h3 class="text-md font-medium text-gray-900 mb-2">Tipo de entrega</h3>
-                            <div class="space-y-2">
-                                <div class="flex items-center">
-                                    <input id="delivery" name="deliveryType" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="delivery" class="ml-2 text-sm text-gray-700">Delivery (entrega)</label>
-                                </div>
-                                <div id="deliveryAddressContainer" class="ml-6 hidden">
-                                    <input type="text" placeholder="Digite seu endereço completo" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <input id="pickup" name="deliveryType" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="pickup" class="ml-2 text-sm text-gray-700">Retirar no balcão</label>
-                                </div>
-                                <div id="pickupAddressContainer" class="ml-6 hidden bg-gray-100 p-2 rounded text-sm">
-                                    <p>Av. Principal, 1234 - Centro</p>
-                                    <p class="text-xs text-gray-500">Horário de retirada: 10:00 - 22:00</p>
-                                </div>
+                    <div class="flex-1 overflow-y-auto px-2 sm:px-4">
+                        <ul id="cartItems" class="space-y-3 py-2">
+                            <!-- Cart items will be added here by JavaScript -->
+                            <li class="py-4 text-center text-gray-500" id="emptyCartMessage">
+                                Seu carrinho está vazio
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="border-t border-gray-200 py-4 px-4 sm:px-6">
+                        <!-- Delivery Options - Simplified -->
+                        <div class="mb-4">
+                            <h3 class="text-sm font-medium text-gray-900 mb-1">Entrega</h3>
+                            <div class="flex space-x-4">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="deliveryType" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Delivery</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="deliveryType" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Retirar</span>
+                                </label>
                             </div>
                         </div>
                         
-                        <!-- Scheduling -->
-                        <div class="mb-6">
-                            <h3 class="text-md font-medium text-gray-900 mb-2">Agendamento</h3>
-                            <div class="flex items-center">
-                                <input id="schedule" type="checkbox" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300 rounded">
-                                <label for="schedule" class="ml-2 text-sm text-gray-700">Agendar para depois</label>
-                            </div>
-                            <div id="scheduleFields" class="mt-2 grid grid-cols-2 gap-2 hidden">
-                                <input type="date" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                <input type="time" class="block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                            </div>
-                        </div>
-                        
-                        <!-- Payment Options -->
-                        <div class="mb-6">
-                            <h3 class="text-md font-medium text-gray-900 mb-2">Forma de pagamento</h3>
-                            <div class="space-y-2">
-                                <div class="flex items-center">
-                                    <input id="pix" name="payment" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="pix" class="ml-2 text-sm text-gray-700">PIX</label>
-                                </div>
-                                <div id="pixKeyContainer" class="ml-6 hidden bg-gray-100 p-2 rounded text-sm">
-                                    <p class="font-medium">Chave PIX: 123.456.789-00</p>
-                                    <button class="mt-1 text-orange-500 text-xs flex items-center">
-                                        <i class="fas fa-copy mr-1"></i> Copiar chave
-                                    </button>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <input id="credit" name="payment" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="credit" class="ml-2 text-sm text-gray-700">Cartão de crédito</label>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <input id="debit" name="payment" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="debit" class="ml-2 text-sm text-gray-700">Cartão de débito</label>
-                                </div>
-                                
-                                <div class="flex items-center">
-                                    <input id="cash" name="payment" type="radio" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
-                                    <label for="cash" class="ml-2 text-sm text-gray-700">Dinheiro</label>
-                                </div>
-                                <div id="cashChangeContainer" class="ml-6 hidden">
-                                    <input type="text" placeholder="Precisa de troco para quanto?" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-orange-500 focus:border-orange-500 text-sm">
-                                </div>
+                        <!-- Payment Options - Simplified -->
+                        <div class="mb-4">
+                            <h3 class="text-sm font-medium text-gray-900 mb-1">Pagamento</h3>
+                            <div class="grid grid-cols-2 gap-2">
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">PIX</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Crédito</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Débito</span>
+                                </label>
+                                <label class="inline-flex items-center">
+                                    <input type="radio" name="payment" class="h-4 w-4 text-orange-500 focus:ring-orange-500 border-gray-300">
+                                    <span class="ml-2 text-xs">Dinheiro</span>
+                                </label>
                             </div>
                         </div>
                         
@@ -721,36 +684,36 @@
                 const itemTotal = item.price * item.quantity;
                 
                 const li = document.createElement('li');
-                li.className = 'py-6 flex fade-in';
+                li.className = 'bg-gray-50 rounded-lg p-3 fade-in';
                 li.innerHTML = `
-                    <div class="flex-shrink-0 w-20 h-20 overflow-hidden rounded-md border border-gray-200">
-                        <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
-                    </div>
-                    
-                    <div class="ml-4 flex-1 flex flex-col">
-                        <div>
-                            <div class="flex justify-between text-base font-medium text-gray-900">
-                                <h3>${item.name}</h3>
-                                <p class="ml-4">R$ ${itemTotal.toFixed(2)}</p>
-                            </div>
-                            <p class="mt-1 text-sm text-gray-500">R$ ${item.price.toFixed(2)} cada</p>
-                            ${item.notes ? `<p class="mt-1 text-xs text-gray-500">Obs: ${item.notes}</p>` : ''}
+                    <div class="flex gap-3">
+                        <div class="flex-shrink-0 w-16 h-16 overflow-hidden rounded-lg border border-gray-200">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
                         </div>
                         
-                        <div class="flex-1 flex items-end justify-between text-sm">
-                            <div class="flex items-center border border-gray-300 rounded-md">
-                                <button class="cart-minus px-2 py-1 text-gray-600" data-index="${index}">
-                                    <i class="fas fa-minus text-xs"></i>
-                                </button>
-                                <span class="px-2">${item.quantity}</span>
-                                <button class="cart-plus px-2 py-1 text-gray-600" data-index="${index}">
-                                    <i class="fas fa-plus text-xs"></i>
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start">
+                                <h3 class="font-medium text-gray-900">${item.name}</h3>
+                                <p class="font-bold text-orange-500">R$ ${itemTotal.toFixed(2)}</p>
+                            </div>
+                            <p class="text-xs text-gray-500 mb-1">R$ ${item.price.toFixed(2)} cada</p>
+                            ${item.notes ? `<p class="text-xs bg-white p-1 rounded text-gray-700">${item.notes}</p>` : ''}
+                            
+                            <div class="mt-2 flex items-center justify-between">
+                                <div class="flex items-center border border-gray-300 rounded-md bg-white">
+                                    <button class="cart-minus px-2 py-0.5 text-gray-600 hover:bg-gray-100" data-index="${index}">
+                                        <i class="fas fa-minus text-xs"></i>
+                                    </button>
+                                    <span class="px-2 text-sm">${item.quantity}</span>
+                                    <button class="cart-plus px-2 py-0.5 text-gray-600 hover:bg-gray-100" data-index="${index}">
+                                        <i class="fas fa-plus text-xs"></i>
+                                    </button>
+                                </div>
+                                
+                                <button class="cart-remove text-red-500 hover:text-red-700" data-index="${index}">
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
-                            
-                            <button class="cart-remove font-medium text-red-500 hover:text-red-700" data-index="${index}">
-                                <i class="fas fa-times"></i>
-                            </button>
                         </div>
                     </div>
                 `;
@@ -868,7 +831,7 @@
                     return;
                 }
                 
-                const phoneNumber = "5511999999999"; // Replace with your WhatsApp number
+                const phoneNumber = "5584986725871"; // Replace with your WhatsApp number
                 const message = generateWhatsAppMessage();
                 window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
             });
