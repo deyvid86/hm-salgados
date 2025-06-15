@@ -67,7 +67,7 @@
                 </button>
             </div>
         </div>
-        
+                
         <!-- Mobile Search -->
         <div class="container mx-auto px-4 pb-3 md:hidden">
             <div id="mobile-search-container" class="search-container flex items-center bg-gray-100 rounded-full px-4 py-2">
@@ -87,7 +87,7 @@
             <p class="text-xl mb-6">Delivery rápido e sabor garantido</p>
             <div class="bg-white text-gray-800 inline-block px-4 py-2 rounded-full">
                 <i class="fas fa-clock mr-2 text-yellow-500"></i>
-                <span class="font-semibold">Aberto agora: 10:00 - 22:00</span>
+                <span class="font-semibold">trabalhamos de segunda a sexta das 08:00 as 19:00</span>
             </div>
         </div>
     </section>
@@ -168,7 +168,7 @@
                                 <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Rua, número, bairro, complemento...">
                             </div>
                         </button>
-                                                
+                                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="pickup">
                             <div class="flex items-center">
                                 <i class="fas fa-store mr-3 text-blue-500"></i>
@@ -178,7 +178,7 @@
                                 </div>
                             </div>
                         </button>
-                                                
+                                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="schedule">
                             <div class="flex items-center">
                                 <i class="fas fa-calendar-alt mr-3 text-purple-500"></i>
@@ -224,14 +224,14 @@
                             <p class="text-sm">Dinheiro</p>
                         </button>
                     </div>
-                                        
+                                                            
                     <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
                         <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
                         <button class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
                             <i class="fas fa-copy mr-2"></i> Copiar chave
                         </button>
                     </div>
-                                        
+                                                            
                     <div id="cash-change" class="mt-3 hidden">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Precisa de troco para quanto?</label>
                         <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="R$ 0,00">
@@ -271,21 +271,21 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                                
+                                                
                 <img id="modal-product-image" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                                
+                                                
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
                     <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ex: sem cebola, maionese à parte..."></textarea>
                 </div>
-                                
+                                                
                 <div class="flex items-center justify-between">
                     <div class="flex items-center border rounded-lg">
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="decrease">-</button>
                         <span class="quantity-display px-3 py-1">1</span>
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="increase">+</button>
                     </div>
-                                        
+                                                            
                     <button id="add-to-cart-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium">
                         Adicionar <span id="modal-total-price" class="font-bold">R$ 0.00</span>
                     </button>
@@ -410,6 +410,7 @@
         const searchResultsInfo = document.getElementById('search-results-info');
         const searchTermEl = document.getElementById('search-term');
         const clearSearchResultsBtn = document.getElementById('clear-search-results');
+        const deliveryFeeEl = document.getElementById('delivery-fee');
 
         // Initialize the app
         function init() {
@@ -422,7 +423,7 @@
             productsGrid.innerHTML = '';
             
             let filteredProducts = products;
-            
+
             // Filter by category if not 'all'
             if (category !== 'all') {
                 filteredProducts = filteredProducts.filter(product => product.category === category);
@@ -432,7 +433,7 @@
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
                 filteredProducts = filteredProducts.filter(product => 
-                    product.name.toLowerCase().includes(term) || 
+                    product.name.toLowerCase().includes(term) ||
                     product.description.toLowerCase().includes(term)
                 );
                 
@@ -615,7 +616,18 @@
                 
                 // Update totals
                 const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-                const deliveryFee = 5.00;
+                
+                // Calculate delivery fee (free for orders over R$ 150)
+                let deliveryFee = 5.00;
+                if (subtotal > 150) {
+                    deliveryFee = 0.00;
+                    deliveryFeeEl.textContent = "Grátis";
+                    deliveryFeeEl.classList.add('text-green-600');
+                } else {
+                    deliveryFeeEl.textContent = `R$ ${deliveryFee.toFixed(2)}`;
+                    deliveryFeeEl.classList.remove('text-green-600');
+                }
+                
                 const total = subtotal + deliveryFee;
                 
                 subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
@@ -734,7 +746,7 @@
             
             // Total
             const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-            const deliveryFee = 5.00;
+            const deliveryFee = subtotal > 150 ? 0 : 5.00;
             const total = subtotal + deliveryFee;
             
             // Compose final message
@@ -852,7 +864,7 @@
                 }
             });
         }
-        
+                
         // Initialize the app
         init();
     </script>
