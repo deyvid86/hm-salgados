@@ -49,7 +49,7 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="https://i.pinimg.com/736x/b1/0f/31/b10f318e195294eda257cfb1dd7917a7.jpg" alt="Logo" class="h-10 w-10 rounded-full">
-                <h1 class="ml-3 text-xl font-bold text-gray-800">HM salgados - servimos bem para servir sempre!</h1>
+                <h1 class="ml-3 text-xl font-bold text-gray-800">Lanchonete Sabor & Cia</h1>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="relative hidden md:block">
@@ -83,11 +83,11 @@
     <!-- Banner -->
     <section class="banner text-white py-12 px-4">
         <div class="container mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Os melhores salgados da cidade!</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Os melhores lanches da cidade!</h2>
             <p class="text-xl mb-6">Delivery rápido e sabor garantido</p>
             <div class="bg-white text-gray-800 inline-block px-4 py-2 rounded-full">
                 <i class="fas fa-clock mr-2 text-yellow-500"></i>
-                <span class="font-semibold">trabalhamos de segunda a sexta das 08:00 as 19:00</span>
+                <span class="font-semibold">Aberto agora: 10:00 - 22:00</span>
             </div>
         </div>
     </section>
@@ -227,7 +227,7 @@
                                                             
                     <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
                         <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
-                        <button class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
+                        <button id="copy-pix-btn" class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
                             <i class="fas fa-copy mr-2"></i> Copiar chave
                         </button>
                     </div>
@@ -416,6 +416,17 @@
         function init() {
             renderProducts();
             setupEventListeners();
+            
+            // Add PIX copy functionality
+            document.getElementById('copy-pix-btn')?.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText('lanchonete@email.com');
+                    alert('Chave PIX copiada com sucesso!');
+                } catch (err) {
+                    console.error('Failed to copy PIX key:', err);
+                    alert('Erro ao copiar chave PIX');
+                }
+            });
         }
 
         // Render products based on category and search term
@@ -750,7 +761,7 @@
             const total = subtotal + deliveryFee;
             
             // Compose final message
-            return `*HM Salgados*\n\n👤Nome: ${name}\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
+            return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
         }
 
         // Setup event listeners
