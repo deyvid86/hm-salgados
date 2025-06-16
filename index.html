@@ -825,7 +825,7 @@
                 const address = document.querySelector('#delivery-address-field input').value || 'Não informado';
                 deliveryInfo = `📍Endereço: ${address}`;
             } else if (deliveryType === 'pickup') {
-                deliveryInfo = '📍Retirar no balcão: Av. castelo branco n72, setor universitários, A Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina ( fica na antiga rua 16)';
+                deliveryInfo = '📍Retirar no balcão: Av. castelo branco n72, setor universitários\n📌 Localização:(https://maps.app.goo.gl/qmemorn8zKoGWJQv9)\nA Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina (fica na antiga rua 16)';
             } else if (deliveryType === 'schedule') {
                 const date = document.querySelector('#schedule-fields input[type="date"]').value || 'Não informado';
                 const time = document.querySelector('#schedule-fields input[type="time"]').value || 'Não informado';
