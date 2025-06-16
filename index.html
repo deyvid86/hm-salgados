@@ -835,7 +835,7 @@
             // Payment info
             let paymentInfo = '';
             if (paymentType === 'pix') {
-                paymentInfo = '💳Pagamento: PIX';
+                paymentInfo = '💳Pagamento: PIX \n Chave PIX: 11091037000199';
             } else if (paymentType === 'credit') {
                 paymentInfo = '💳Pagamento: Cartão de Crédito';
             } else if (paymentType === 'debit') {
@@ -861,7 +861,7 @@
             const total = subtotal + deliveryFee;
                         
             // Compose final message
-            return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
+            return `*HM salgados*\n\n👤Nome: ${name}\n\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
         }
 
         // Setup event listeners
