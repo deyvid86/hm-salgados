@@ -58,7 +58,7 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center">
                 <img src="https://i.pinimg.com/736x/b1/0f/31/b10f318e195294eda257cfb1dd7917a7.jpg" alt="Logo" class="h-10 w-10 rounded-full">
-                <h1 class="ml-3 text-xl font-bold text-gray-800">Lanchonete Sabor & Cia</h1>
+                <h1 class="ml-3 text-xl font-bold text-gray-800">HM Salgados - Servimos Bem Para Servir Sempre!</h1>
             </div>
             <div class="flex items-center space-x-4">
                 <div class="relative hidden md:block">
@@ -90,14 +90,14 @@
     </header>
 
     <!-- Banner -->
-    <section class="banner text-white py-12 px-4">
+    <section class="banner text-white py-12 px-6">
         <div class="container mx-auto text-center">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Os melhores lanches da cidade!</h2>
-            <p class="text-xl mb-6">Delivery rápido e sabor garantido</p>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Seja Bem Vindo!!! </p> Os melhores Salgados da Região! </p> Delivey rápido e sabor garantido!</h2> 
             <div class="bg-white text-gray-800 inline-block px-4 py-2 rounded-full">
                 <i class="fas fa-clock mr-2 text-yellow-500"></i>
-                <span class="font-semibold">Aberto agora: 10:00 - 22:00</span>
+                <span class="font-semibold">Segunda a Sexta 08:00 - 19:00</span>
             </div>
+			<p class="text-xl mb-6">Abaixo de 150 unidades tem uma taxa fixa de 8,00 reais</p>
         </div>
     </section>
 
@@ -183,7 +183,7 @@
                                 <i class="fas fa-store mr-3 text-blue-500"></i>
                                 <div>
                                     <p class="font-medium">Retirar no balcão</p>
-                                    <p class="text-sm text-gray-500">Av. castelo branco n72, setor universitários, A Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina ( fica na antiga rua 16)</p>
+                                    <p class="text-sm text-gray-500">Av. castelo branco n72, setor universitários</p>
                                 </div>
                             </div>
                             <div class="mt-3">
@@ -243,7 +243,7 @@
                     </div>
                                                                                 
                     <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
-                        <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
+                        <p class="text-sm font-medium text-green-800 mb-2">Chave PIX CNPJ: 11.091.037/0001-99</p> HM Salgados</p>
                         <button id="copy-pix-btn" class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
                             <i class="fas fa-copy mr-2"></i> Copiar chave
                         </button>
@@ -503,7 +503,7 @@
             // Add PIX copy functionality
             document.getElementById('copy-pix-btn')?.addEventListener('click', async () => {
                 try {
-                    await navigator.clipboard.writeText('lanchonete@email.com');
+                    await navigator.clipboard.writeText('11091037000199');
                     alert('Chave PIX copiada com sucesso!');
                 } catch (err) {
                     console.error('Failed to copy PIX key:', err);
@@ -823,13 +823,13 @@
             let deliveryInfo = '';
             if (deliveryType === 'delivery') {
                 const address = document.querySelector('#delivery-address-field input').value || 'Não informado';
-                deliveryInfo = `📍Endereço: ${address}`;
+                deliveryInfo = `📍Endereço para entrega: ${address}\n`;
             } else if (deliveryType === 'pickup') {
-                deliveryInfo = '📍Retirar no balcão: Av. castelo branco n72, setor universitários\n📌 Localização: (https://maps.app.goo.gl/qmemorn8zKoGWJQv9)\nA Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina (fica na antiga rua 16)';
+                deliveryInfo = '📍Retirar no balcão: Av. castelo branco n72, setor universitários, Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina (fica na antiga rua 16)\n\n📌 Localização: (https://maps.app.goo.gl/qmemorn8zKoGWJQv9)\n';
             } else if (deliveryType === 'schedule') {
                 const date = document.querySelector('#schedule-fields input[type="date"]').value || 'Não informado';
                 const time = document.querySelector('#schedule-fields input[type="time"]').value || 'Não informado';
-                deliveryInfo = `📅 Agendamento: ${date} às ${time}`;
+                deliveryInfo = `📅 Agendamento: ${date} às ${time}\n`;
             }
                         
             // Payment info
@@ -861,7 +861,7 @@
             const total = subtotal + deliveryFee;
                         
             // Compose final message
-            return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
+            return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
         }
 
         // Setup event listeners
