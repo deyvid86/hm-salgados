@@ -41,6 +41,15 @@
         .search-container.focused {
             box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.3);
         }
+        .address-copied {
+            animation: fadeInOut 2s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -67,7 +76,7 @@
                 </button>
             </div>
         </div>
-                
+                        
         <!-- Mobile Search -->
         <div class="container mx-auto px-4 pb-3 md:hidden">
             <div id="mobile-search-container" class="search-container flex items-center bg-gray-100 rounded-full px-4 py-2">
@@ -98,8 +107,8 @@
         <div class="mb-8 overflow-x-auto">
             <div class="flex space-x-2 pb-2">
                 <button class="category-btn active px-4 py-2 rounded-full bg-yellow-500 text-white font-medium whitespace-nowrap" data-category="all">Todos</button>
-                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="lanches">Lanches</button>
-                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="pastel">Pastéis</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="salgadinhos fritos">salgadinhos fritos</button>
+                <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="salgadinhos assados">salgadinhos assados</button>
                 <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="bebidas">Bebidas</button>
                 <button class="category-btn px-4 py-2 rounded-full bg-gray-200 text-gray-800 font-medium whitespace-nowrap" data-category="combos">Combos</button>
             </div>
@@ -168,17 +177,25 @@
                                 <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Rua, número, bairro, complemento...">
                             </div>
                         </button>
-                                                                
+                                                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="pickup">
                             <div class="flex items-center">
                                 <i class="fas fa-store mr-3 text-blue-500"></i>
                                 <div>
                                     <p class="font-medium">Retirar no balcão</p>
-                                    <p class="text-sm text-gray-500">Av. Principal, 123 - Centro</p>
+                                    <p class="text-sm text-gray-500">Av. castelo branco n72, setor universitários, A Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina ( fica na antiga rua 16)</p>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button id="copy-address-btn" class="w-full bg-blue-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
+                                    <i class="fas fa-copy mr-2"></i> Copiar endereço
+                                </button>
+                                <div id="address-copied-message" class="text-center text-green-600 text-sm mt-2 hidden address-copied">
+                                    Endereço copiado com sucesso!
                                 </div>
                             </div>
                         </button>
-                                                                
+                                                                                
                         <button class="delivery-option w-full text-left p-3 border rounded-lg" data-type="schedule">
                             <div class="flex items-center">
                                 <i class="fas fa-calendar-alt mr-3 text-purple-500"></i>
@@ -224,14 +241,14 @@
                             <p class="text-sm">Dinheiro</p>
                         </button>
                     </div>
-                                                            
+                                                                                
                     <div id="pix-info" class="mt-3 p-3 bg-green-50 rounded-lg hidden">
                         <p class="text-sm font-medium text-green-800 mb-2">Chave PIX: lanchonete@email.com</p>
                         <button id="copy-pix-btn" class="w-full bg-green-600 text-white py-2 rounded-md text-sm font-medium flex items-center justify-center">
                             <i class="fas fa-copy mr-2"></i> Copiar chave
                         </button>
                     </div>
-                                                            
+                                                                                
                     <div id="cash-change" class="mt-3 hidden">
                         <label class="block text-sm font-medium text-gray-700 mb-1">Precisa de troco para quanto?</label>
                         <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="R$ 0,00">
@@ -271,21 +288,21 @@
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                                                
+                                                            
                 <img id="modal-product-image" src="" alt="" class="w-full h-48 object-cover rounded-lg mb-4">
-                                                
+                                                            
                 <div class="mb-4">
                     <label class="block text-sm font-medium text-gray-700 mb-2">Observações</label>
                     <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Ex: sem cebola, maionese à parte..."></textarea>
                 </div>
-                                                
+                                                            
                 <div class="flex items-center justify-between">
                     <div class="flex items-center border rounded-lg">
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="decrease">-</button>
                         <span class="quantity-display px-3 py-1">1</span>
                         <button class="quantity-btn px-3 py-1 text-xl" data-action="increase">+</button>
                     </div>
-                                                            
+                                                                                
                     <button id="add-to-cart-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg font-medium">
                         Adicionar <span id="modal-total-price" class="font-bold">R$ 0.00</span>
                     </button>
@@ -297,71 +314,135 @@
     <script>
         // Sample product data
         const products = [
-            {
-                id: 1,
-                name: "X-Tudo",
-                price: 19.95,
-                category: "lanches",
-                description: "Pão, hambúrguer, queijo, presunto, ovo, alface, tomate, maionese",
-                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=999&q=80"
-            },
-            {
-                id: 2,
-                name: "Bauru Especial",
-                price: 10.49,
-                category: "lanches",
-                description: "Pão francês, rosbife, queijo derretido, tomate, picles",
-                image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80"
-            },
-            {
-                id: 3,
-                name: "Pastel de Calabresa",
-                price: 7.50,
-                category: "pastel",
-                description: "Massa crocante recheada com calabresa e queijo",
-                image: "https://images.unsplash.com/photo-1630448489165-1e4d9a1e0a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-            },
-            {
-                id: 4,
-                name: "Pastel de Queijo",
-                price: 7.50,
-                category: "pastel",
-                description: "Massa crocante recheada com queijo derretido",
-                image: "https://images.unsplash.com/photo-1630448489165-1e4d9a1e0a0e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
-            },
-            {
-                id: 5,
-                name: "Suco de Goiaba",
-                price: 7.50,
-                category: "bebidas",
-                description: "Suco natural de goiaba 500ml",
-                image: "https://images.unsplash.com/photo-1625576880768-731cbc6ab7c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            },
-            {
-                id: 6,
-                name: "Refrigerante Lata",
-                price: 5.00,
-                category: "bebidas",
-                description: "Refrigerante em lata 350ml",
-                image: "https://images.unsplash.com/photo-1610873167013-2dd675d30ef4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80"
-            },
-            {
-                id: 7,
-                name: "Combo Casal",
-                price: 35.00,
-                category: "combos",
-                description: "2 X-Tudo + 2 Refrigerantes Lata",
-                image: "https://images.unsplash.com/photo-1547584370-accdafe7276a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            },
-            {
-                id: 8,
-                name: "Combo Família",
-                price: 65.00,
-                category: "combos",
-                description: "4 X-Tudo + 4 Refrigerantes Lata + 1 Porção de Batata",
-                image: "https://images.unsplash.com/photo-1547584370-accdafe7276a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-            }
-        ];
+    {
+        id: 2,
+        name: "Bolinha de Queijo",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Bolinha crocante recheada com queijo mussarela.",
+        image: "https://i.panelinha.com.br/i1/bk-2056-bolinha-de-queijo.webp"
+    },
+    {
+        id: 3,
+        name: "Risole de Milho",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Massa macia recheada com creme de milho.",
+        image: "https://img.cybercook.com.br/imagens/receitas/313/risoles-de-milho-cremoso.jpeg"
+    },
+    {
+        id: 4,
+        name: "Bolinha de Pizza",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Bolinha com massa de pizza, recheada de presunto, queijo e orégano.",
+        image: "https://dqcd2ry9j125c.cloudfront.net/receita/646f4d9ac14c83fcf40fc5dd/fotos/45e97254-4e1a-4385-a307-ca227ffc03af-lg.jpg"
+    },
+    {
+        id: 5,
+        name: "Risole de Carne",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Risole crocante recheado com carne moída temperada.",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FRNLYsOCjlILQTK3bHZhA-kSKYWqpgNnyw&s"
+    },
+    {
+        id: 6,
+        name: "Coxinha de Frango",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Coxinha tradicional, massa macia recheada de frango desfiado.",
+        image: "https://blog.vapza.com.br/wp-content/uploads/2020/10/coxinha-de-frango.jpg"
+    },
+    {
+        id: 7,
+        name: "Pastel de Queijo",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Pastel frito, massa crocante, recheado com queijo mussarela.",
+        image: "https://minhasreceitinhas.com.br/wp-content/uploads/2023/05/pastel-de-feira-de-queijo.jpg"
+    },
+    {
+        id: 8,
+        name: "Pastel de Chocolate",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Pastel frito, massa crocante, recheado de chocolate.",
+        image: "https://www.receitasnestle.com.br/sites/default/files/srh_recipes/1839c3978f94265b92661cc94408784d.jpg"
+    },
+    {
+        id: 9,
+        name: "Pastel de Carne",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Pastel frito, massa crocante, recheado de carne moída.",
+        image: "https://vitat.com.br/bkt/busca-de-alimentos/658-pastel-de-carne.jpg"
+    },
+    {
+        id: 10,
+        name: "Quibe Recheado de Queijo Mussarela",
+        price: 1.35,
+        category: "salgadinhos fritos",
+        description: "Quibe frito, crocante por fora, recheado de mussarela.",
+        image: "https://guiadacozinha.com.br/wp-content/uploads/2020/04/quibe-recheado-cream-cheese.jpg"
+    },
+    {
+        id: 11,
+        name: "Mini pizza de Calabresa",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Mini pizza com massa macia, molho de tomate, mussarela e calabresa.",
+        image: "https://acarnequeomundoprefere.com.br/uploads/media/image/33-11-24.png"
+    },
+    {
+        id: 12,
+        name: "Mini pizza de Queijo e Presunto",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Mini pizza com massa macia, molho de tomate, presunto e mussarela.",
+        image: "https://static.wixstatic.com/media/92c0d7_14ca395fcff74e2697b89722fb7580ce~mv2.jpg/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/92c0d7_14ca395fcff74e2697b89722fb7580ce~mv2.jpg"
+    },
+    {
+        id: 13,
+        name: "Mini pizza de Chocolate",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Mini pizza com massa macia, chocolate derretido como recheio.",
+        image: "https://www.catarininho.com.br/wp-content/uploads/2024/11/catapizza-amendoce-mini-pizza-com-massa-de-pao-de-queijo-3.jpg"
+    },
+    {
+        id: 14,
+        name: "Enroladinho de Salsicha e Queijo",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Enroladinho de massa macia, salsicha e queijo como recheio.",
+        image: "https://www.minhareceita.com.br/app/uploads/2022/08/enroladinho-de-salsicha-portal-minha-receita-2.jpg"
+    },
+    {
+        id: 15,
+        name: "Enroladinho de Queijo e Presunto",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Enroladinho de massa macia, presunto e queijo como recheio.",
+        image: "https://receitatodahora.com.br/wp-content/uploads/2024/03/ENROLADINHO-DE-PRESUNTO-E-QUEIJO-06031.jpg"
+    },
+    {
+        id: 16,
+        name: "Esfirra de Pernil",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Esfirra assada, massa macia recheada de pernil desfiado.",
+        image: "https://i.ytimg.com/vi/LveE9eHFKgI/sddefault.jpg"
+    },
+    {
+        id: 17,
+        name: "Empada de Frango",
+        price: 1.35,
+        category: "salgadinhos assados",
+        description: "Empada assada, massa crocante recheada de frango desfiado.",
+        image: "https://guiadacozinha.com.br/wp-content/uploads/2018/05/empadinha-de-frango-1-768x619.jpg"
+    }
+ ]
 
         // Cart state
         let cart = [];
@@ -411,12 +492,14 @@
         const searchTermEl = document.getElementById('search-term');
         const clearSearchResultsBtn = document.getElementById('clear-search-results');
         const deliveryFeeEl = document.getElementById('delivery-fee');
+        const copyAddressBtn = document.getElementById('copy-address-btn');
+        const addressCopiedMessage = document.getElementById('address-copied-message');
 
         // Initialize the app
         function init() {
             renderProducts();
             setupEventListeners();
-            
+
             // Add PIX copy functionality
             document.getElementById('copy-pix-btn')?.addEventListener('click', async () => {
                 try {
@@ -427,19 +510,36 @@
                     alert('Erro ao copiar chave PIX');
                 }
             });
+
+            // Add address copy functionality
+            copyAddressBtn?.addEventListener('click', async () => {
+                try {
+                    const address = "Av. castelo branco n72, setor universitários, A Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina ( fica na antiga rua 16)";
+                    await navigator.clipboard.writeText(address);
+                    
+                    // Show feedback message
+                    addressCopiedMessage.classList.remove('hidden');
+                    setTimeout(() => {
+                        addressCopiedMessage.classList.add('hidden');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy address:', err);
+                    alert('Erro ao copiar endereço');
+                }
+            });
         }
 
         // Render products based on category and search term
         function renderProducts(category = 'all', searchTerm = '') {
             productsGrid.innerHTML = '';
-            
+                        
             let filteredProducts = products;
 
             // Filter by category if not 'all'
             if (category !== 'all') {
                 filteredProducts = filteredProducts.filter(product => product.category === category);
             }
-            
+                        
             // Filter by search term if provided
             if (searchTerm) {
                 const term = searchTerm.toLowerCase();
@@ -447,14 +547,14 @@
                     product.name.toLowerCase().includes(term) ||
                     product.description.toLowerCase().includes(term)
                 );
-                
+                                
                 // Show search results info
                 searchResultsInfo.classList.remove('hidden');
                 searchTermEl.textContent = searchTerm;
             } else {
                 searchResultsInfo.classList.add('hidden');
             }
-            
+                        
             if (filteredProducts.length === 0) {
                 productsGrid.innerHTML = `
                     <div class="col-span-full text-center py-10">
@@ -497,7 +597,7 @@
         function searchProducts(term) {
             currentSearchTerm = term;
             renderProducts(currentCategory, term);
-            
+                        
             // Show/hide clear button
             if (term) {
                 clearSearchBtn.classList.remove('hidden');
@@ -523,14 +623,14 @@
         function openProductModal(productId) {
             currentProduct = products.find(p => p.id === productId);
             currentQuantity = 1;
-            
+                        
             modalProductName.textContent = currentProduct.name;
             modalProductPrice.textContent = `R$ ${currentProduct.price.toFixed(2)}`;
             modalProductImage.src = currentProduct.image;
             modalProductImage.alt = currentProduct.name;
             quantityDisplay.textContent = currentQuantity;
             updateModalTotalPrice();
-            
+                        
             productModal.classList.remove('hidden');
             overlay.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -552,11 +652,11 @@
         // Add item to cart
         function addToCart() {
             const notes = document.querySelector('#product-modal textarea').value;
-            
+                        
             const existingItemIndex = cart.findIndex(item => 
                 item.product.id === currentProduct.id && item.notes === notes
             );
-            
+                        
             if (existingItemIndex !== -1) {
                 cart[existingItemIndex].quantity += currentQuantity;
             } else {
@@ -566,7 +666,7 @@
                     notes: notes
                 });
             }
-            
+                        
             updateCart();
             closeProductModal();
         }
@@ -576,7 +676,7 @@
             // Update cart count
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
-            
+                        
             // Update cart items
             if (cart.length === 0) {
                 emptyCartMessage.classList.remove('hidden');
@@ -585,7 +685,7 @@
             } else {
                 emptyCartMessage.classList.add('hidden');
                 cartSummary.classList.remove('hidden');
-                
+                                
                 cartItems.innerHTML = '';
                 cart.forEach((item, index) => {
                     const cartItem = document.createElement('div');
@@ -611,23 +711,23 @@
                     `;
                     cartItems.appendChild(cartItem);
                 });
-                
+                                
                 // Add event listeners to new buttons
                 document.querySelectorAll('.remove-item-btn').forEach(btn => {
                     btn.addEventListener('click', () => removeFromCart(parseInt(btn.dataset.index)));
                 });
-                
+                                
                 document.querySelectorAll('.decrease-item-btn').forEach(btn => {
                     btn.addEventListener('click', () => updateCartItemQuantity(parseInt(btn.dataset.index), -1));
                 });
-                
+                                
                 document.querySelectorAll('.increase-item-btn').forEach(btn => {
                     btn.addEventListener('click', () => updateCartItemQuantity(parseInt(btn.dataset.index), 1));
                 });
-                
+                                
                 // Update totals
                 const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-                
+                                
                 // Calculate delivery fee (free for orders over R$ 150)
                 let deliveryFee = 5.00;
                 if (subtotal > 150) {
@@ -638,9 +738,9 @@
                     deliveryFeeEl.textContent = `R$ ${deliveryFee.toFixed(2)}`;
                     deliveryFeeEl.classList.remove('text-green-600');
                 }
-                
+                                
                 const total = subtotal + deliveryFee;
-                
+                                
                 subtotalEl.textContent = `R$ ${subtotal.toFixed(2)}`;
                 totalEl.textContent = `R$ ${total.toFixed(2)}`;
             }
@@ -655,7 +755,7 @@
         // Update cart item quantity
         function updateCartItemQuantity(index, change) {
             const newQuantity = cart[index].quantity + change;
-            
+                        
             if (newQuantity < 1) {
                 removeFromCart(index);
             } else {
@@ -683,11 +783,11 @@
             deliveryOptions.forEach(opt => opt.classList.remove('active'));
             option.classList.add('active');
             deliveryType = option.dataset.type;
-            
+                        
             // Show/hide additional fields
             deliveryAddressField.classList.add('hidden');
             scheduleFields.classList.add('hidden');
-            
+                        
             if (deliveryType === 'delivery') {
                 deliveryAddressField.classList.remove('hidden');
             } else if (deliveryType === 'schedule') {
@@ -700,11 +800,11 @@
             paymentOptions.forEach(opt => opt.classList.remove('active'));
             option.classList.add('active');
             paymentType = option.dataset.type;
-            
+                        
             // Show/hide additional fields
             pixInfo.classList.add('hidden');
             cashChange.classList.add('hidden');
-            
+                        
             if (paymentType === 'pix') {
                 pixInfo.classList.remove('hidden');
             } else if (paymentType === 'cash') {
@@ -715,23 +815,23 @@
         // Format WhatsApp message
         function formatWhatsAppMessage() {
             if (cart.length === 0) return '';
-            
+                        
             // Customer info
             const name = document.querySelector('#cart-sidebar input[type="text"]').value || 'Não informado';
-            
+                        
             // Delivery info
             let deliveryInfo = '';
             if (deliveryType === 'delivery') {
                 const address = document.querySelector('#delivery-address-field input').value || 'Não informado';
                 deliveryInfo = `📍Endereço: ${address}`;
             } else if (deliveryType === 'pickup') {
-                deliveryInfo = '📍Retirar no balcão: Av. Principal, 123 - Centro';
+                deliveryInfo = '📍Retirar no balcão: Av. castelo branco n72, setor universitários, A Retirada dos pedidos deve ser feita, por gentileza, no portão de baixo! É só virar a esquina ( fica na antiga rua 16)';
             } else if (deliveryType === 'schedule') {
                 const date = document.querySelector('#schedule-fields input[type="date"]').value || 'Não informado';
                 const time = document.querySelector('#schedule-fields input[type="time"]').value || 'Não informado';
                 deliveryInfo = `📅 Agendamento: ${date} às ${time}`;
             }
-            
+                        
             // Payment info
             let paymentInfo = '';
             if (paymentType === 'pix') {
@@ -744,7 +844,7 @@
                 const change = document.querySelector('#cash-change input').value || '0,00';
                 paymentInfo = `💳Pagamento: Dinheiro\n🪙Troco para: R$ ${change}`;
             }
-            
+                        
             // Products list
             let productsList = '🛒Produtos:\n';
             cart.forEach(item => {
@@ -754,12 +854,12 @@
                 }
                 productsList += '\n';
             });
-            
+                        
             // Total
             const subtotal = cart.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
             const deliveryFee = subtotal > 150 ? 0 : 5.00;
             const total = subtotal + deliveryFee;
-            
+                        
             // Compose final message
             return `*Pedido Lanchonete Sabor & Cia*\n\n👤Nome: ${name}\n${deliveryInfo}\n${paymentInfo}\n\n${productsList}\n💲Total: R$ ${total.toFixed(2)}`;
         }
@@ -775,15 +875,15 @@
                     renderProducts(currentCategory, currentSearchTerm);
                 });
             });
-            
+                        
             // Cart button
             cartBtn.addEventListener('click', openCart);
             closeCartBtn.addEventListener('click', closeCart);
             overlay.addEventListener('click', closeCart);
-            
+                        
             // Product modal
             closeModalBtn.addEventListener('click', closeProductModal);
-            
+                        
             // Quantity buttons
             quantityBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -796,86 +896,86 @@
                     updateModalTotalPrice();
                 });
             });
-            
+                        
             // Add to cart button
             addToCartBtn.addEventListener('click', addToCart);
-            
+                        
             // Delivery options
             deliveryOptions.forEach(option => {
                 option.addEventListener('click', () => selectDeliveryOption(option));
             });
-            
+                        
             // Payment options
             paymentOptions.forEach(option => {
                 option.addEventListener('click', () => selectPaymentOption(option));
             });
-            
+                        
             // Checkout button
             checkoutBtn.addEventListener('click', () => {
                 if (cart.length === 0) {
                     alert('Seu carrinho está vazio!');
                     return;
                 }
-                
+                                
                 if (!deliveryType) {
                     alert('Por favor, selecione uma opção de entrega');
                     return;
                 }
-                
+                                
                 if (!paymentType) {
                     alert('Por favor, selecione uma forma de pagamento');
                     return;
                 }
-                
+                                
                 const message = formatWhatsAppMessage();
                 const encodedMessage = encodeURIComponent(message);
                 window.open(`https://wa.me/5584986725871?text=${encodedMessage}`, '_blank');
             });
-            
+                        
             // Search functionality
             searchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
-            
+                        
             mobileSearchInput.addEventListener('input', (e) => {
                 searchProducts(e.target.value);
             });
-            
+                        
             clearSearchBtn.addEventListener('click', clearSearch);
             mobileClearSearchBtn.addEventListener('click', clearSearch);
             clearSearchResultsBtn.addEventListener('click', clearSearch);
-            
+                        
             // Search container focus effects
             searchInput.addEventListener('focus', () => {
                 searchContainer.classList.add('focused');
             });
-            
+                        
             searchInput.addEventListener('blur', () => {
                 searchContainer.classList.remove('focused');
             });
-            
+                        
             mobileSearchInput.addEventListener('focus', () => {
                 mobileSearchContainer.classList.add('focused');
             });
-            
+                        
             mobileSearchInput.addEventListener('blur', () => {
                 mobileSearchContainer.classList.remove('focused');
             });
-            
+                        
             // Handle Enter key in search
             searchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     searchProducts(e.target.value);
                 }
             });
-            
+                        
             mobileSearchInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
                     searchProducts(e.target.value);
                 }
             });
         }
-                
+                        
         // Initialize the app
         init();
     </script>
