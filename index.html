@@ -882,30 +882,31 @@
         function addToCart() {
             const notes = document.querySelector('#product-modal textarea').value;
                         
-            // For combos, include selected flavors in the notes
-            let finalNotes = notes;
-            if (currentProduct.category === 'combos', 'Bebida' && selectedFlavors.length > 0) {
-                if (finalNotes) finalNotes += ' | ';
-                finalNotes += `Sabores: ${selectedFlavors.join(', ')}`;
-            }
+            // For combos and Bebidas, include selected flavors in the notes
+let finalNotes = notes;
+if ((currentProduct.category === 'combos' ||
+     currentProduct.category === 'Bebidas') && selectedFlavors.length > 0) {
+    if (finalNotes) finalNotes += ' | ';
+    finalNotes += `Sabores: ${selectedFlavors.join(', ')}`;
+}
 
-            const existingItemIndex = cart.findIndex(item => 
-                item.product.id === currentProduct.id && item.notes === finalNotes
-            );
-                        
-            if (existingItemIndex !== -1) {
-                cart[existingItemIndex].quantity += currentQuantity;
-            } else {
-                cart.push({
-                    product: currentProduct,
-                    quantity: currentQuantity,
-                    notes: finalNotes
-                });
-            }
-                        
-            updateCart();
-            closeProductModal();
-        }
+const existingItemIndex = cart.findIndex(item => 
+    item.product.id === currentProduct.id && item.notes === finalNotes
+);
+
+if (existingItemIndex !== -1) {
+    cart[existingItemIndex].quantity += currentQuantity;
+} else {
+    cart.push({ 
+        product: currentProduct, 
+        quantity: currentQuantity, 
+        notes: finalNotes 
+    });
+}
+
+updateCart();
+closeProductModal();
+
 	    
         // Update cart UI
         function updateCart() {
