@@ -798,13 +798,15 @@
             document.querySelector('#product-modal textarea').value = '';
 
             // Show/hide flavor selection based on product category
-            if (currentProduct.category === 'combos' && currentProduct.flavors) {
-                flavorSelection.classList.remove('hidden');
-                flavorLimitSpan.textContent = currentFlavorLimit;
-                renderFlavorOptions();
-            } else {
-                flavorSelection.classList.add('hidden');
-            }
+           if ((currentProduct.category === 'combos' ||
+     currentProduct.category === 'Bebidas') && currentProduct.flavors) {
+    flavorSelection.classList.remove('hidden');
+    flavorLimitSpan.textContent = currentFlavorLimit;
+    renderFlavorOptions();
+} else {
+    flavorSelection.classList.add('hidden');
+}
+
 
             productModal.classList.remove('hidden');
             overlay.classList.remove('hidden');
