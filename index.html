@@ -884,7 +884,7 @@
                         
             // For combos, include selected flavors in the notes
             let finalNotes = notes;
-            if (currentProduct.category === 'combos, Bebidas' && selectedFlavors.length > 0) {
+            if (currentProduct.category === 'combos', 'Bebida' && selectedFlavors.length > 0) {
                 if (finalNotes) finalNotes += ' | ';
                 finalNotes += `Sabores: ${selectedFlavors.join(', ')}`;
             }
