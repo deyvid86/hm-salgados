@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<a href="admin.html" style="position: fixed; top: 20px; right: 20px; z-index: 9999; background-color: #2563eb; color: white; padding: 10px 16px; border-radius: 8px; text-decoration: none; font-weight: bold;">Admin</a>
-    <a href="admin.html" class="absolute top-10 right-10 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 z-50">Admin</a>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lanchonete Delivery</title>
@@ -354,27 +352,388 @@
 
     <script>
         // Sample product data
-        let products = [];
+        const products = [
+            {
+                id: 2,
+                name: "Bolinha de Queijo",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Bolinha crocante recheada com queijo mussarela.",
+                image: "https://i.panelinha.com.br/i1/bk-2056-bolinha-de-queijo.webp"
+            },
+            {
+                id: 3,
+                name: "Risole de Milho",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Massa macia recheada com creme de milho.",
+                image: "https://img.cybercook.com.br/imagens/receitas/313/risoles-de-milho-cremoso.jpeg"
+            },
+            {
+                id: 4,
+                name: "Bolinha de Pizza",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Bolinha com massa de pizza, recheada de presunto, queijo e orégano.",
+                image: "https://dqcd2ry9j125c.cloudfront.net/receita/646f4d9ac14c83fcf40fc5dd/fotos/45e97254-4e1a-4385-a307-ca227ffc03af-lg.jpg"
+            },
+            {
+                id: 5,
+                name: "Risole de Carne",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Risole crocante recheado com carne moída temperada.",
+                image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FRNLYsOCjlILQTK3bHZhA-kSKYWqpgNnyw&s"
+            },
+            {
+                id: 6,
+                name: "Coxinha de Frango",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Coxinha tradicional, massa macia recheada de frango desfiado.",
+                image: "https://blog.vapza.com.br/wp-content/uploads/2020/10/coxinha-de-frango.jpg"
+            },
+            {
+                id: 7,
+                name: "Pastel de Queijo",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Pastel frito, massa crocante, recheado com queijo mussarela.",
+                image: "https://minhasreceitinhas.com.br/wp-content/uploads/2023/05/pastel-de-feira-de-queijo.jpg"
+            },
+            {
+                id: 8,
+                name: "Pastel de Chocolate",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Pastel frito, massa crocante, recheado de chocolate.",
+                image: "https://www.receitasnestle.com.br/sites/default/files/srh_recipes/1839c3978f94265b92661cc94408784d.jpg"
+            },
+            {
+                id: 9,
+                name: "Pastel de Carne",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Pastel frito, massa crocante, recheado de carne moída.",
+                image: "https://vitat.com.br/bkt/busca-de-alimentos/658-pastel-de-carne.jpg"
+            },
+            {
+                id: 10,
+                name: "Quibe Recheado de Queijo Mussarela",
+                price: 1.35,
+                category: "salgadinhos fritos",
+                description: "Quibe frito, crocante por fora, recheado de mussarela.",
+                image: "https://guiadacozinha.com.br/wp-content/uploads/2020/04/quibe-recheado-cream-cheese.jpg"
+            },
+            {
+                id: 11,
+                name: "Mini pizza de Calabresa",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Mini pizza com massa macia, molho de tomate, mussarela e calabresa.",
+                image: "https://acarnequeomundoprefere.com.br/uploads/media/image/33-11-24.png"
+            },
+            {
+                id: 12,
+                name: "Mini pizza de Queijo e Presunto",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Mini pizza com massa macia, molho de tomate, presunto e mussarela.",
+                image: "https://static.wixstatic.com/media/92c0d7_14ca395fcff74e2697b89722fb7580ce~mv2.jpg/v1/fill/w_568,h_378,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/92c0d7_14ca395fcff74e2697b89722fb7580ce~mv2.jpg"
+            },
+            {
+                id: 13,
+                name: "Mini pizza de Chocolate",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Mini pizza com massa macia, chocolate derretido como recheio.",
+                image: "https://www.catarininho.com.br/wp-content/uploads/2024/11/catapizza-amendoce-mini-pizza-com-massa-de-pao-de-queijo-3.jpg"
+            },
+            {
+                id: 14,
+                name: "Enroladinho de Salsicha e Queijo",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Enroladinho de massa macia, salsicha e queijo como recheio.",
+                image: "https://www.minhareceita.com.br/app/uploads/2022/08/enroladinho-de-salsicha-portal-minha-receita-2.jpg"
+            },
+            {
+                id: 15,
+                name: "Enroladinho de Queijo e Presunto",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Enroladinho de massa macia, presunto e queijo como recheio.",
+                image: "https://receitatodahora.com.br/wp-content/uploads/2024/03/ENROLADINHO-DE-PRESUNTO-E-QUEIJO-06031.jpg"
+            },
+            {
+                id: 16,
+                name: "Esfirra de Pernil",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Esfirra assada, massa macia recheada de pernil desfiado.",
+                image: "https://i.ytimg.com/vi/LveE9eHFKgI/sddefault.jpg"
+            },
+            {
+                id: 17,
+                name: "Empada de Frango",
+                price: 1.35,
+                category: "salgadinhos assados",
+                description: "Empada assada, massa crocante recheada de frango desfiado.",
+                image: "https://guiadacozinha.com.br/wp-content/uploads/2018/05/empadinha-de-frango-1-768x619.jpg"
+            },
+            {
+                id: 18,
+                name: "Combo de 20 Salgados",
+                price: 27.00,
+                category: "combos",
+                description: "Escolha 2 sabores diferentes de salgados",
+                image: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/169574637665130948b1e15_75_75.jpeg",
+                flavors: [
+                    "Coxinha de Frango",
+                    "Bolinha de Queijo",
+                    "Risole de Milho",
+                    "Bolinha de Pizza",
+                    "Risole de Carne",
+                    "Pastel de Queijo",
+                    "Pastel de Chocolate",
+                    "Pastel de Carne",
+                    "Quibe Recheado"
+                ],
+                flavorLimit: 2
+            },
+            {
+                id: 19,
+                name: "Combo de 30 Salgados",
+                price: 40.50,
+                category: "combos",
+                description: "Escolha 3 sabores diferentes de salgados",
+                image: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/169574637665130948b1e15_75_75.jpeg",
+                flavors: [
+                    "Coxinha de Frango",
+                    "Bolinha de Queijo",
+                    "Risole de Milho",
+                    "Bolinha de Pizza",
+                    "Risole de Carne",
+                    "Pastel de Queijo",
+                    "Pastel de Chocolate",
+                    "Pastel de Carne",
+                    "Quibe Recheado"
+                ],
+                flavorLimit: 3
+            },
+            {
+                id: 20,
+                name: "Combo de 40 Salgados",
+                price: 54.00,
+                category: "combos",
+                description: "Escolha 4 sabores diferentes de salgados",
+                image: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/169574637665130948b1e15_75_75.jpeg",
+                flavors: [
+                    "Coxinha de Frango",
+                    "Bolinha de Queijo",
+                    "Risole de Milho",
+                    "Bolinha de Pizza",
+                    "Risole de Carne",
+                    "Pastel de Queijo",
+                    "Pastel de Chocolate",
+                    "Pastel de Carne",
+                    "Quibe Recheado"
+                ],
+                flavorLimit: 4
+            },
+			{
+                id: 21,
+                name: "Combo de 50 Salgados",
+                price: 67.50,
+                category: "combos",
+                description: "Escolha 5 sabores diferentes de salgados",
+                image: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/169574637665130948b1e15_75_75.jpeg",
+                flavors: [
+                    "Coxinha de Frango",
+                    "Bolinha de Queijo",
+                    "Risole de Milho",
+                    "Bolinha de Pizza",
+                    "Risole de Carne",
+                    "Pastel de Queijo",
+                    "Pastel de Chocolate",
+                    "Pastel de Carne",
+                    "Quibe Recheado"
+                ],
+                flavorLimit: 5
+            },
+			{
+                id: 22,
+                name: "Combo de 70 Salgados",
+                price: 94.50,
+                category: "combos",
+                description: "Escolha 7 sabores diferentes de salgados",
+                image: "https://instadelivery-public.nyc3.cdn.digitaloceanspaces.com/itens/169574637665130948b1e15_75_75.jpeg",
+                flavors: [
+                    "Coxinha de Frango",
+                    "Bolinha de Queijo",
+                    "Risole de Milho",
+                    "Bolinha de Pizza",
+                    "Risole de Carne",
+                    "Pastel de Queijo",
+                    "Pastel de Chocolate",
+                    "Pastel de Carne",
+                    "Quibe Recheado"
+                ],
+                flavorLimit: 7
+            },
+	    {
+                id: 23,
+                name: "Suco de Caixinha 1L",
+                price: 9.00,
+                category: "Bebidas",
+                description: "Uva, Maracujá, Caju, Pêssego",
+                image: "https://http2.mlstatic.com/D_NQ_NP_932831-MLA81261642038_122024-O.webp",
+                flavors: [
+                    "Uva",
+                    "Maracujá",
+                    "Caju",
+                    "Pêssego"
+                ],
+                flavorLimit: 1
+            },
+	    {
+                id: 24,
+                name: "Coca Cola 2L",
+                price: 14.00,
+                category: "Bebidas",
+                description: "Refrigerante coca cola 2L",
+                image: "https://superprix.vteximg.com.br/arquivos/ids/210608-600-600/BMo6Zlso.png?v=638083543189830000"
+            },
+			{
+                id: 25,
+                name: "Pacote de Bolinha de Queijo Congelado",
+                price: 27.00,
+                category: "salgadinhos congelado",
+                description: "20 unidades.",
+                image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+            },
+            {
+				id: 26,
+				name: "Risole de Milho congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades.",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 27,
+				name: "Bolinha de Pizza congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 28,
+				name: "Risole de Carne congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 29,
+				name: "Coxinha de Frango congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 30,
+				name: "Pastel de Queijo congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 31,
+				name: "Pastel de Chocolate congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 32,
+				name: "Pastel de Carne congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 33,
+				name: "Quibe Recheado de Queijo Mussarela congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+						{
+				id: 34,
+				name: "Mini pizza de Calabresa congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 35,
+				name: "Mini pizza de Queijo e Presunto congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 36,
+				name: "Mini pizza de Chocolate congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 37,
+				name: "Enroladinho de Salsicha e Queijo congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 38,
+				name: "Enroladinho de Queijo e Presunto congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 39,
+				name: "Esfirra de Pernil congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			},
+			{
+				id: 40,
+				name: "Empada de Frango congelado",
+				price: 27.00,
+				category: "salgadinhos congelado",
+				description: "20 unidades",
+				image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"
+			}
 
-window.onload = () => {
-    const saved = localStorage.getItem('products');
-    if (saved) {
-        products = JSON.parse(saved);
-    } else {
-        // Caso não tenha no localStorage, use os padrões do seu site
-        products = [
-            {id: 2,name: "Bolinha de Queijo",price: 1.35,category: "salgadinhos fritos",description: "",image: "https://dqcd2ry9j125c.cloudfront.net/receita/646f4d9ac14c83fcf40fc5dd/fotos/45e97254-4e1a-4385-a307-ca227ffc03af-lg.jpg"}, 
-            {id: 5,name: "Risole de Carne",price: 1.35,category: "salgadinhos fritos",description: "Risole crocante recheado com carne moída temperada.",image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_FRNLYsOCjlILQTK3bHZhA-kSKYWqpgNnyw&s"},
-            {id: 6,name: "Coxinha de Frango",price: 1.35,category: "salgadinhos fritos",description: "Coxinha tradicional, massa macia recheada de frango desfiado.",image: "https://blog.vapza.com.br/wp-content/uploads/2020/10/coxinha-de-frango.jpg"},
-            {id: 36,name: "Mini pizza de Chocolate congelado",price: 27.00,category: "salgadinhos congelado",description: "20 unidades",image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"},
-            {id: 37,name: "Enroladinho de Salsicha e Queijo congelado",price: 27.00,category: "salgadinhos congelado",description: "20 unidades",image: "https://thumb-cdn.soluall.net/prod/shp_products/sp1280fw/84ce412c-9280-49f4-aeba-93d5185516f5/a217b4c1-05ef-46b6-8ea9-e49a8139cab6.jpeg"}
-            // Adicione mais conforme necessário
-        ];
-    }
-
-    // Chama função para renderizar os produtos
-    renderProducts(); // Certifique-se de que essa função existe
-};
+        ]
 
         // Cart state
         let cart = [];
